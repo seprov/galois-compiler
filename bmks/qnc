@@ -1,0 +1,6 @@
+#!/bin/bash
+P=`dirname $0`
+SRC=$1
+SRC_CU=`basename $1 .py`
+ARCH=${ARCH:-sm_35}
+nvcc -dc -DCSRG_TEX -O3 -arch $ARCH -I $P/../rt/include/mgpu/include -I $P/../rt/include/ ${SRC_CU}.cu -o ${SRC_CU}.o -L $P/../rt/lib && nvcc -DCSRG_TEX -O3 -arch $ARCH -I $P/../rt/include/mgpu/include -I $P/../rt/include/ ${SRC_CU}.o -o ${SRC_CU} -L $P/../rt/lib -lggrt # -lcudadevrt 

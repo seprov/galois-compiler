@@ -1,0 +1,88 @@
+LonestarGPU Benchmark Characterization (from a compiler's perspective)
+
+* BFS
+
+  Synchronous
+
+  Worklist AllNodes(Graph)
+
+  ForAll Node in AllNodes
+      Worklist EdgeList = Expand(Node.Edges)
+      ForAll Edge in EdgeList
+           If Edge.Dest.Weight == INFINITY:
+	       Edge.Dest.Weight = Level [atomic]
+	       Push Edge.Dest onto Next
+
+Here Operator is (Node, Edge) [note ForAll loops]
+
+Irregular Functions are Node expansion and Edge Expansion
+
+Atomic Update and Push are also irregular
+
+* SSSP
+
+  Synchronous
+
+  ForAll Node in AllNodes
+      Worklist EdgeList = Expand(Node.Edges)
+      ForAll Edge in EdgeList
+           If Node.Weight + Edge.Weight < Edge.Dest.Weight:
+	       Atomic Edge.Dest.Weight = Node.Weight + Edge.Weight
+	       Push Edge.Dest onto Next
+  
+* MST
+
+  Needs Union-Find structure with complex locking
+
+  Has multiple complex kernels that need to be split/merged?
+
+
+  ForAll Nodes in BoundaryNodes
+     Worklist EdgeList = Expand(Node.Edges)
+     ForAll Edge in EdgeList
+         MinEdge = minEdgeSpanning
+
+     if MinEdge
+         MinEdgeInCluster = min(all MinEdges)
+
+Unify Node, Edge.Dest
+
+MinEdgeInCluster can be modeled as a Min(Worklist)
+
+* DMR
+
+  Asynchronous
+  
+  Work element mapping affects conflict
+
+  Neighbourhood generation and locking
+
+
+  ForAll Triangles in Mesh
+        Is Bad(Triangle):
+	    NeighbourHood = All Triangles adjoining me and ...
+	    Correct Bad Triangle
+	    Adjust Triangles in Neighbourhood
+  
+
+* SP
+
+* SGD
+
+* BH
+
+
+* PTA
+
+* CC?
+
+* Meta
+** Design
+
+   Worklist -> Operator -> Worklist | EMPTY
+
+   where Operator could be "ACQUIRE", "RELEASE", "EXPAND_EDGES"
+
+   Each can be "Irregular Data Parallel Functions" whose work can be shared.
+
+   Worklist could be on-the-fly or stored

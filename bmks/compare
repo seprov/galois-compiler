@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for i in *; do
+    if [ -d "$i" ]; then
+	make -C $i compare
+    fi;
+done;
+
+

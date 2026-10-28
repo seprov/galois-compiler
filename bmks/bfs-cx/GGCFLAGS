@@ -1,0 +1,1 @@
+GGCFLAGS="--opt np --opt parcomb --np-fine-grain-only --opt oitergb --npf 8"

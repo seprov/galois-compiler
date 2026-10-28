@@ -1,0 +1,32 @@
+{
+ "__module__": {
+  "kernel": {
+   "_optimizations_": {}
+  }, 
+  "gg_main": {
+   "_optimizations_": {}, 
+   "main_pipe": {
+    "cx_tp_pipe": {
+     "_optimizations_": {}
+    }, 
+    "_optimizations_": {}, 
+    "cx_pipe": {
+     "_optimizations_": {}
+    }
+   }
+  }, 
+  "contract": {
+   "_optimizations_": {}
+  }, 
+  "contract_expand": {
+   "_optimizations_": {"np": true, "np_schedulers": ["fg"], "np_factor": 8, "_ignore_": false}
+  }, 
+  "_optimizations_": {}, 
+  "expand": {
+   "_optimizations_": {}
+  },
+  "filter": {
+   "_optimizations_": {}
+  }
+ }
+}

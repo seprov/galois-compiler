@@ -1,0 +1,7 @@
+--opt np --npf 8
+--opt oitergb
+--opt parcomb
+--unroll pipes
+-p bfs-hybrid.props
+--hacks lighten-wl
+

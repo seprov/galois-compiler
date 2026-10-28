@@ -1,0 +1,4 @@
+--opt np --np-fine-grain-only --npf 8
+--opt parcomb
+--opt oitergb
+--unroll pipes

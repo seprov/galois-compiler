@@ -1,0 +1,1 @@
+GGCFLAGS="--opt parcomb --opt np --npf 8 --opt coop"

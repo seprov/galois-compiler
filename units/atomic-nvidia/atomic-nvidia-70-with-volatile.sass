@@ -1,0 +1,90 @@
+
+Fatbin elf code:
+================
+arch = sm_35
+code version = [1,7]
+producer = <unknown>
+host = linux
+compile_size = 64bit
+
+	code for sm_35
+
+Fatbin elf code:
+================
+arch = sm_35
+code version = [1,7]
+producer = cuda
+host = linux
+compile_size = 64bit
+
+	code for sm_35
+		Function : _Z4testPiS_
+	.headerflags    @"EF_CUDA_SM35 EF_CUDA_PTX_SM(EF_CUDA_SM35)"
+                                                                              /* 0x08b8a010a0a01000 */
+        /*0008*/                   MOV R1, c[0x0][0x44];                      /* 0x64c03c00089c0006 */
+        /*0010*/                   ISUB R1, R1, 0x8;                          /* 0xc0880000041c0405 */
+        /*0018*/                   MOV32I R3, 0x33445566;                     /* 0x7419a22ab31fc00e */
+        /*0020*/                   LOP.OR R0, R1, c[0x0][0x24];               /* 0x62001000049c0402 */
+        /*0028*/                   LOP32I.AND R22, R0, 0xffffff;              /* 0x20007fffff9c0058 */
+        /*0030*/                   MOV R16, c[0x0][0x148];                    /* 0x64c03c00291c0042 */
+        /*0038*/                   STL [R22], R3;                             /* 0x7aa00000001c580e */
+                                                                              /* 0x0880b8b0d8108010 */
+        /*0048*/                   MOV R17, c[0x0][0x14c];                    /* 0x64c03c00299c0046 */
+        /*0050*/                   LDL R0, [R22];                             /* 0x7a200000001c5802 */
+        /*0058*/                   MOV R18, c[0x0][0x140];                    /* 0x64c03c00281c004a */
+        /*0060*/                   MOV R19, c[0x0][0x144];                    /* 0x64c03c00289c004e */
+        /*0068*/                   ISETP.NE.AND P0, PT, R0, R3, PT;           /* 0xdb581c00019c001e */
+        /*0070*/               @P0 EXIT;                                      /* 0x180000000000003c */
+        /*0078*/                   MOV32I R21, 0x1;                           /* 0x74000000009fc056 */
+                                                                              /* 0x0800b0cc8c100010 */
+        /*0088*/                   S2R R2, SR_TID.X;                          /* 0x86400000109c000a */
+        /*0090*/                   MOV R20, RZ;                               /* 0xe4c03c007f9c0052 */
+        /*0098*/                   ATOM.E.CAS R0, [R18], R20, R21;            /* 0x778800000a1c4802 */
+        /*00a0*/                   SSY 0x180;                                 /* 0x148000006c000000 */
+        /*00a8*/                   CCTL.E.IV [R18];                           /* 0x7b800000001c4816 */
+        /*00b0*/                   ISETP.NE.AND P0, PT, R0, RZ, PT;           /* 0xdb581c007f9c001e */
+        /*00b8*/               @P0 NOP.S;                                     /* 0x8580000000403c02 */
+                                                                              /* 0x08b0a88c10a0dc10 */
+        /*00c8*/                   LD.E R3, [R16];                            /* 0xc4800000001c400c */
+        /*00d0*/                   MOV32I R4, 0x1;                            /* 0x74000000009fc012 */
+        /*00d8*/                   IADD R0, R3, R2;                           /* 0xe0800000011c0c02 */
+        /*00e0*/                   ST.E [R16], R0;                            /* 0xe4800000001c4000 */
+        /*00e8*/                   SSY 0x178;                                 /* 0x1480000044000000 */
+        /*00f0*/                   ATOM.E.CAS R3, [R18], R4, RZ;              /* 0x77a80000021c480e */
+        /*00f8*/                   CCTL.E.IV [R18];                           /* 0x7b800000001c4816 */
+                                                                              /* 0x08848010801000b0 */
+        /*0108*/                   ISETP.EQ.AND P0, PT, R3, 0x1, PT;          /* 0xb3281c00009c0c1d */
+        /*0110*/               @P0 BRA 0x170;                                 /* 0x120000002c00003c */
+        /*0118*/                   MOV32I R4, 0x0;                            /* 0x74000000001fc012 */
+        /*0120*/                   MOV32I R5, 0x0;                            /* 0x74000000001fc016 */
+        /*0128*/                   MOV32I R6, 0x0;                            /* 0x74000000001fc01a */
+        /*0130*/                   MOV32I R7, 0x0;                            /* 0x74000000001fc01e */
+        /*0138*/                   MOV32I R10, 0x0;                           /* 0x74000000001fc02a */
+                                                                              /* 0x080000b800108010 */
+        /*0148*/                   MOV32I R11, 0x0;                           /* 0x74000000001fc02e */
+        /*0150*/                   MOV32I R8, 0x18;                           /* 0x740000000c1fc022 */
+        /*0158*/                   MOV R13, RZ;                               /* 0xe4c03c007f9c0036 */
+        /*0160*/                   MOV32I R12, 0x1;                           /* 0x74000000009fc032 */
+        /*0168*/                   JCAL 0x0;                                  /* 0x1100000000000100 */
+        /*0170*/                   MOV32I.S R0, 0x1;                          /* 0x7400000000dfc002 */
+        /*0178*/                   STL.S [R22], R0;                           /* 0x7aa00000005c5802 */
+                                                                              /* 0x080000b810b8b0dc */
+        /*0188*/                   LDL R0, [R22];                             /* 0x7a200000001c5802 */
+        /*0190*/                   ISETP.EQ.AND P0, PT, R0, c[0x2][0x0], PT;  /* 0x5b281c40001c001e */
+        /*0198*/               @P0 BRA 0x98;                                  /* 0x12007fff7c00003c */
+        /*01a0*/                   MOV RZ, RZ;                                /* 0xe4c03c007f9c03fe */
+        /*01a8*/                   EXIT;                                      /* 0x18000000001c003c */
+        /*01b0*/                   BRA 0x1b0;                                 /* 0x12007ffffc1c003c */
+        /*01b8*/                   NOP;                                       /* 0x85800000001c3c02 */
+		............................
+
+
+
+Fatbin ptx code:
+================
+arch = sm_35
+code version = [4,2]
+producer = cuda
+host = linux
+compile_size = 64bit
+compressed

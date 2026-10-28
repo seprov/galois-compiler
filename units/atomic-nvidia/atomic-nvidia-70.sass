@@ -1,0 +1,74 @@
+
+Fatbin elf code:
+================
+arch = sm_35
+code version = [1,7]
+producer = <unknown>
+host = linux
+compile_size = 64bit
+
+	code for sm_35
+
+Fatbin elf code:
+================
+arch = sm_35
+code version = [1,7]
+producer = cuda
+host = linux
+compile_size = 64bit
+
+	code for sm_35
+		Function : _Z4testPiS_
+	.headerflags    @"EF_CUDA_SM35 EF_CUDA_PTX_SM(EF_CUDA_SM35)"
+                                                                      /* 0x0880108010801000 */
+        /*0008*/                   MOV R1, c[0x0][0x44];              /* 0x64c03c00089c0006 */
+        /*0010*/                   MOV32I R3, 0x1;                    /* 0x74000000009fc00e */
+        /*0018*/                   SSY 0x78;                          /* 0x148000002c000000 */
+        /*0020*/                   MOV R4, c[0x0][0x148];             /* 0x64c03c00291c0012 */
+        /*0028*/                   MOV R5, c[0x0][0x14c];             /* 0x64c03c00299c0016 */
+        /*0030*/                   MOV R6, c[0x0][0x140];             /* 0x64c03c00281c001a */
+        /*0038*/                   MOV R7, c[0x0][0x144];             /* 0x64c03c00289c001e */
+                                                                      /* 0x088000b8b010dc00 */
+        /*0048*/                   MOV R2, RZ;                        /* 0xe4c03c007f9c000a */
+        /*0050*/                   ATOM.E.CAS R0, [R6], R2, R3;       /* 0x77880000011c1802 */
+        /*0058*/                   CCTL.E.IV [R6];                    /* 0x7b800000001c1816 */
+        /*0060*/                   ISETP.NE.AND P0, PT, R0, RZ, PT;   /* 0xdb581c007f9c001e */
+        /*0068*/               @P0 BRA 0x50;                          /* 0x12007ffff000003c */
+        /*0070*/                   NOP.S;                             /* 0x85800000005c3c02 */
+        /*0078*/                   LD.E R0, [R4];                     /* 0xc4800000001c1000 */
+                                                                      /* 0x08b010dc8ca0d810 */
+        /*0088*/                   MOV32I R2, 0x1;                    /* 0x74000000009fc00a */
+        /*0090*/                   S2R R3, SR_TID.X;                  /* 0x86400000109c000e */
+        /*0098*/                   IADD R0, R0, R3;                   /* 0xe0800000019c0002 */
+        /*00a0*/                   ST.E [R4], R0;                     /* 0xe4800000001c1000 */
+        /*00a8*/                   ATOM.E.CAS R2, [R6], R2, RZ;       /* 0x77a80000011c180a */
+        /*00b0*/                   CCTL.E.IV [R6];                    /* 0x7b800000001c1816 */
+        /*00b8*/                   ISETP.EQ.AND P0, PT, R2, 0x1, PT;  /* 0xb3281c00009c081d */
+                                                                      /* 0x08801088108010b8 */
+        /*00c8*/               @P0 EXIT;                              /* 0x180000000000003c */
+        /*00d0*/                   MOV32I R4, 0x0;                    /* 0x74000000001fc012 */
+        /*00d8*/                   MOV32I R5, 0x0;                    /* 0x74000000001fc016 */
+        /*00e0*/                   MOV32I R6, 0x0;                    /* 0x74000000001fc01a */
+        /*00e8*/                   MOV32I R7, 0x0;                    /* 0x74000000001fc01e */
+        /*00f0*/                   MOV32I R10, 0x0;                   /* 0x74000000001fc02a */
+        /*00f8*/                   MOV32I R11, 0x0;                   /* 0x74000000001fc02e */
+                                                                      /* 0x0800b810b8008010 */
+        /*0108*/                   MOV32I R8, 0x18;                   /* 0x740000000c1fc022 */
+        /*0110*/                   MOV R13, RZ;                       /* 0xe4c03c007f9c0036 */
+        /*0118*/                   MOV32I R12, 0x1;                   /* 0x74000000009fc032 */
+        /*0120*/                   JCAL 0x0;                          /* 0x1100000000000100 */
+        /*0128*/                   MOV RZ, RZ;                        /* 0xe4c03c007f9c03fe */
+        /*0130*/                   EXIT;                              /* 0x18000000001c003c */
+        /*0138*/                   BRA 0x138;                         /* 0x12007ffffc1c003c */
+		............................
+
+
+
+Fatbin ptx code:
+================
+arch = sm_35
+code version = [4,2]
+producer = cuda
+host = linux
+compile_size = 64bit
+compressed

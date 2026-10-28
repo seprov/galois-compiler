@@ -1,0 +1,139 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+
+import sys
+if sys.version_info < (2, 7):
+    print >>sys.stderr, "%s: need python version 2.7 (you have %s)" % (sys.argv[0], sys.version)
+    sys.exit(1)
+
+import argparse
+import gg.compiler
+import gg.backend.cuda
+import os
+
+def convert_arg_line_to_args(self, arg_line):
+    l = arg_line.strip()
+    if l and l[0] == "#":
+        return []
+
+    return l.split()
+
+def add_backend_options(p):
+    config = gg.compiler.get_config()
+    backends = config['backends']
+
+    for b in backends:
+        backends[b].add_backend_arguments(p)
+
+def opt_enabled(opt, args, precondition = True):
+    return precondition and ("all" not in args.dis_opt) and (opt not in args.dis_opt) and (opt in args.opt)
+
+argparse.ArgumentParser.convert_arg_line_to_args = convert_arg_line_to_args
+parser = argparse.ArgumentParser(description="Compile a Galois program to the GPU", fromfile_prefix_chars="@")
+
+
+parser.add_argument("input", help="Input file")
+
+parser.add_argument("-o", dest="output", metavar="FILE", help="Output file")
+
+parser.add_argument("-p", dest="props", help="Read props from FILE")
+
+parser.add_argument("--wp", dest="write_props", help="Write props to FILE")
+
+
+opt_group = parser.add_argument_group("Optimizations", "Select and customize optimizations to be applied")
+
+opt_group.add_argument("--opt", dest="opt", action="append", help="Enable optimization", choices=set(["oiter", "np", "coop", "parcomb", "oitergb", "backoff"]), default=["oiter", "backoff"])
+
+opt_group.add_argument("--unroll", dest="unroll", action="append", help="Unroll optimization", choices=gg.compiler.UNROLL_CHOICES, default=[])
+
+opt_group.add_argument("--dis-opt", dest="dis_opt", action="append", help="Disable optimization", choices=set(["oiter", "np", "coop", "parcomb", "oitergb", "backoff", "all"]), default=[])
+
+opt_group.add_argument("--bkf", dest="backoff_factor", type=int, help="Backoff blocking factor", default=4)
+
+opt_group.add_argument("--np-fine-grain-only", action="store_true", help="Only use the fine-grained Nested Parallelism inspector and executor (not TB/Warp) [DEPRECATED, use --nps fg]", default=False)
+
+opt_group.add_argument("--cc-disable", dest="dis_cc", action="append", help="Disable CoopConv for Class.Method", choices=set(["RV.return", "WL.push"]), default=[])
+
+opt_group.add_argument("--npf", dest="np_factor", type=int, help="Nested Parallelism Inspector Factor", default=1)
+opt_group.add_argument("--nps", dest="np_sched", action="append", help="Nested Parallelism Scheduler", 
+                       choices=gg.compiler.NP_SCHED_CHOICES, default=[])
+
+
+instr_group = parser.add_argument_group("Instrumentation", "(EXPERIMENTAL) Select instrumentation/profiling to be used")
+
+instr_group.add_argument("--instr", dest="instrument", action="append", help="Enable instrumentation", choices=gg.compiler.INSTRUMENT_CHOICES, default=[])
+
+instr_group.add_argument("--instr-mode", dest="instrument_mode", help="Save or Load instrumentation data (kstates, wlcontents, etc.)", choices=gg.compiler.INSTRUMENT_MODE)
+
+
+log_group = parser.add_argument_group("Logging")
+log_group.add_argument("--logdst", dest="logdst", action="store_true", help="Log to ggc.log in the output directory")
+
+log_group.add_argument("--loglevel", dest="loglevel", help="Root logger level", 
+                    choices=gg.compiler.LOGLEVEL)
+
+log_group.add_argument("--logfile-level", dest="logfile_level", help="Logfile logger level", 
+                    choices=gg.compiler.LOGLEVEL)
+
+
+parser.add_argument("--hacks", dest="hacks", action="append", help="Hacks", 
+                    choices=gg.compiler.HACKS, default=[])
+
+parser.add_argument("-b", dest="backend", help="Backend", default="cuda", choices=set(["cuda"]))
+
+parser.add_argument("--show-cgen", help="Show debug messages for compiler generated code", default=False, action="store_true")
+
+parser.add_argument("--ignore-nested-errors", help="Ignore nested pass errors", default=False, action="store_true")
+
+add_backend_options(parser)
+
+args = parser.parse_args()
+
+options = gg.compiler.CompilerOptions(backend=args.backend)
+options.read_props = args.props
+options.write_props = args.write_props
+options.outline_iterate = opt_enabled("oiter", args)
+options.outline_iterate_gb = opt_enabled("oitergb", args, options.outline_iterate)
+options.np = opt_enabled("np", args)
+options.coop_conv = opt_enabled("coop", args)
+options.np_schedulers = set(args.np_sched)
+options.np_factor = args.np_factor # should automatically active np?
+
+if args.np_fine_grain_only:
+    assert len(args.np_sched) == 0, "Deprecated --np-fine-grain-only option cannot be used with --nps"
+    options.np_schedulers = set(['fg'])
+
+if len(options.np_schedulers) == 0:
+    options.np_schedulers = gg.compiler.NP_SCHED_CHOICES
+
+options.parcomb = opt_enabled("parcomb", args)
+options.quiet_cgen = not args.show_cgen
+options.unroll = args.unroll
+options.ignore_nested_errors = args.ignore_nested_errors
+options.retry_backoff = opt_enabled("backoff", args)
+options.backoff_blocking_factor = args.backoff_factor
+options.backend.set_options(args)
+options.instrument = set(args.instrument)
+options.instrument_mode = args.instrument_mode
+
+if options.instrument_mode is None:
+    assert 'kstate' not in options.instrument, '--instr-mode must be set for --instr kstate'
+    assert 'wlcontents' not in options.instrument, '--instr-mode must be set for --instr wlcontents'
+
+options.cc_disable = set(args.dis_cc)
+options.hacks = set(args.hacks)
+
+if args.loglevel:
+    options.loglevel = args.loglevel
+
+if args.logdst:
+    logfile = os.path.join(os.path.dirname(args.output), "ggc.log")
+    options.logfile = logfile
+
+    if args.logfile_level:
+        options.logfile_level = args.logfile_level
+
+comp = gg.compiler.Compiler()
+if not comp.compile(args.input, args.output, options):
+    sys.exit(1)

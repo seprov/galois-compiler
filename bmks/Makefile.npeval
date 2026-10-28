@@ -1,0 +1,31 @@
+# -*- mode: makefile -*- 
+all: np-serial np-tb np-fg np-wp np-tb+wp np-tb+fg np-wp+fg np-tb+wp+fg
+
+.PHONY: np
+
+np-serial: ../gen-np-serial
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --dis-opt np" $(BMKS)
+
+np-tb: ../gen-np-tb
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps tb" $(BMKS)
+
+np-fg: ../gen-np-fg
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps fg" $(BMKS)
+
+np-wp: ../gen-np-wp
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps wp" $(BMKS)
+
+np-tb+wp: ../gen-np-tb+wp
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps tb --nps wp" $(BMKS)
+
+np-tb+fg: ../gen-np-tb+fg
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps tb --nps fg --npf 8" $(BMKS)
+
+np-wp+fg: ../gen-np-wp+fg
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps wp --nps fg --npf 8" $(BMKS)
+
+np-tb+wp+fg: ../gen-np-tb+wp+fg
+	make GENSRC=../$< GGCFLAGS="--opt oitergb --opt parcomb --logdst --opt np --nps tb --nps wp --nps fg --npf 8" $(BMKS)
+
+../gen-%:
+	mkdir -p $@

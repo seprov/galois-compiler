@@ -1,0 +1,72 @@
+# -*- mode: makefile -*- 
+all: unoptimized best oitergb
+
+.PHONY: unoptimized best
+
+unoptimized: ../gen-unoptimized
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all" $(BMKS)
+
+best: ../gen-best
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.best" $(BMKS)
+
+oitergb: ../gen-oitergb
+	make GENSRC=../$< GGCFLAGS="--opt oiter --opt oitergb --logdst" $(BMKS)
+
+oiter: ../gen-oiter
+	make GENSRC=../$< GGCFLAGS="--opt oiter --logdst" $(BMKS)
+
+np: ../gen-np
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.np --dis-opt oiter --dis-opt parcomb --logdst --opt np" $(BMKS)
+
+cc: parcomb
+
+parcomb: ../gen-parcomb
+	make GENSRC=../$< GGCFLAGS="--opt parcomb --logdst --dis-opt oiter" $(BMKS)
+
+cc+oitergb: ../gen-cc+oitergb
+	make GENSRC=../$< GGCFLAGS="--opt parcomb --logdst --opt oitergb" $(BMKS)
+
+np+oitergb: ../gen-np+oitergb
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.np --opt np --logdst --opt oitergb --dis-opt parcomb" $(BMKS)
+
+np+cc: ../gen-np+cc
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.np --opt np --opt parcomb --dis-opt oiter --logdst " $(BMKS)
+
+cc+np+oitergb: ../gen-cc+np+oitergb
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.np --opt np --opt parcomb --opt oitergb --logdst " $(BMKS)
+
+logs: ../gen-logs
+	make GENSRC=../$< GGCFLAGS="--opt oiter --opt parcomb --opt np --logdst" $(BMKS)
+
+atomics: ../gen-atomics
+	make GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlatomics" $(BMKS)
+
+cc+atomics: ../gen-cc+atomics
+	make GENSRC=../$< GGCFLAGS="--dis-opt oiter --opt parcomb --instr wlatomics --logdst" $(BMKS)
+
+../gen-unoptimized:
+	mkdir -p $@ 
+
+../gen-best:
+	mkdir -p $@
+
+../gen-oitergb:
+	mkdir -p $@
+
+../gen-logs:
+	mkdir -p $@
+
+../gen-np:
+	mkdir -p $@
+
+../gen-parcomb:
+	mkdir -p $@
+
+../gen-cc+oitergb:
+	mkdir -p $@
+
+../gen-np+oitergb:
+	mkdir -p $@
+
+../gen-%:
+	mkdir -p $@

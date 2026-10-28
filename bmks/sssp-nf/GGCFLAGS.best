@@ -1,0 +1,7 @@
+--opt np --nps wp --nps fg --npf 8
+--opt oitergb
+--opt parcomb
+
+# hybridization required
+
+

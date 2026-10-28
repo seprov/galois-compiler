@@ -1,0 +1,84 @@
+This is a description of how to use the bmk2 system to run, verify and
+gather performance data for the benchmarks.
+
+Each benchmark binary directory contains a bmktest2.py that fully
+specifies how to run, verify and obtain performance data from that
+benchmark. 
+
+We assume bmk2 is installed in $BMK2.
+
+Further, we assume bmk2 configuration data for the benchmarks is
+installed in $TESTCONFIG.
+
+Finally, we assume the input files are in $INPUT, and you've replaced
+the value of 'basepath' key in $TESTCONFIG/irgl.inputdb with $INPUT.
+
+Now, change to a benchmark directory (say ggc-unoptimized/bfs-wl) and
+execute:
+
+  $ $BMK2/test2.py -d $TESTCONFIG list
+
+You should see something like this:
+
+[snipped]
+bfs/wl
+	rmat10
+	rmat12
+	r4-2e23
+	rmat16
+	USA-road-d.USA
+	rmat20
+	rmat22
+	USA-road-d.CAL
+	USA-road-d.NY
+[snipped]
+
+
+Running
+-------
+
+To run benchmarks, replace `list` with `run`:
+
+  $ $BMK2/test2.py -d $TESTCONFIG run
+
+
+To view the output of the benchmark, add `-v` *before* the run:
+
+  $ $BMK2/test2.py -d $TESTCONFIG -v run
+
+
+To limit the run to particular inputs:
+
+  $ $BMK2/test2.py -d $TESTCONFIG run USA-road-d.NY
+
+
+To run multiple benchmarks, execute from the parent directory that
+contains the benchmark directories (e.g., `gen-unoptimized`):
+
+  $ $BMK2/test2.py -d $TESTCONFIG --scan . run bfs/wl bfs/cx
+
+
+To run multiple benchmarks on specific inputs, execute from the parent
+directory:
+
+  $ $BMK2/test2.py -d $TESTCONFIG --scan . run bfs/wl bfs/cx rmat16
+
+
+To run all benchmarks, again from the parent directory:
+
+  $ $BMK2/test2.py -d $TESTCONFIG --scan . run 
+
+
+
+Performance Numbers
+-------------------
+
+To obtain performance numbers, replace `run` with `perf`. All other
+commands remain the same. You may want to log the output:
+
+  $ $BMK2/test2.py -d $TESTCONFIG --log numbers.log  -v perf
+
+`perf` will run each benchmark three times by default. To change this:
+
+  $ $BMK2/test2.py -d $TESTCONFIG --log numbers.log  -v perf -r1
+

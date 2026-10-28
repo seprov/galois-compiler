@@ -1,0 +1,5 @@
+#!/bin/bash
+P=`dirname $0`
+SRC=$1
+SRC_CU=`basename $1 .py`
+$P/../src/ggc $GGCFLAGS -o ${SRC_CU}.cu $SRC && nvcc -dc -DCSRG_TEX -O3 -arch sm_35 -I $P/../rt/include/mgpu/include -I $P/../rt/include/ ${SRC_CU}.cu -o ${SRC_CU}.o -L $P/../rt/lib && nvcc -DCSRG_TEX -O3 -arch sm_35 -I $P/../rt/include/mgpu/include -I $P/../rt/include/ ${SRC_CU}.o -o ${SRC_CU} -L $P/../rt/lib -lggrt -lcudadevrt 

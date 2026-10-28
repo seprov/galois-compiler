@@ -1,0 +1,20 @@
+Notes on the GaloisGPU compiler
+
+* Index
+
+  Writing code for a single threaded code makes cooperation between
+  threads extremely difficult.
+
+  Mapping an infinite number of threads to a finite number of threads
+  makes code even messier.
+
+  Adding synchronization/mutual exclusion/locks to st code is even
+  worse.
+
+  [[file:AST.org][AST Design]]
+
+  [[file:bmkchar.org][Benchmark Characterizations]]
+
+  [[file:runtime.org][Runtime Design]]
+
+  Optimizations

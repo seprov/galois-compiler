@@ -1,0 +1,61 @@
+# -*- mode: makefile -*- 
+all: unopt-pm best-pm
+
+.PHONY: unopt-pm best-pm
+
+unopt-pm: ../pm-gen-unopt
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents" $(BMKS)
+
+best-pm: ../pm-gen-best
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.best --dis-opt oitergb --dis-opt oiter --instr wlcontents" $(BMKS)
+
+best-pm-save: ../pm-gen-best-save
+	make GENSRC=../$< GGCFLAGS="@GGCFLAGS.best --dis-opt oitergb --dis-opt oiter --instr wlcontents --instr kstate --instr-mode save --instr omchar" $(BMKS)
+
+unopt-pm-save: ../pm-gen-unopt-save
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode save --instr omchar" $(BMKS)
+
+unopt-pm-load: ../pm-gen-unopt-load
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode load" $(BMKS)
+
+unopt-pm-load-ad: ../pm-gen-unopt-load-ad
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode load --instr wlatomicdensity" $(BMKS)
+
+np-pm-load-ad: ../pm-gen-np-load-ad
+	make -k GENSRC=../$< GGCFLAGS="@GGCFLAGS.best --dis-opt parcomb --dis-opt oiter --dis-opt oitergb --instr wlcontents --instr kstate --instr-mode load --instr wlatomicdensity" $(BMKS)
+
+unopt-pm-load-sort: ../pm-gen-unopt-load-sort
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode load --instr wlsort" $(BMKS)
+
+unopt-pm-full-sort: ../pm-gen-unopt-full-sort
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlsort" $(BMKS)
+
+unopt-pm-full: ../pm-gen-unopt-full
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all" $(BMKS)
+
+unopt-pm-load-wopush: ../pm-gen-unopt-load-wopush
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode load --instr strip_push" $(BMKS)
+
+unopt-pm-load-wopush-fg: ../pm-gen-unopt-load-wopush-fg
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt oiter --instr wlcontents --instr kstate --instr-mode load --instr strip_push --opt np --nps fg --npf 8" $(BMKS)
+
+unopt-pm-load-wopush-wp: ../pm-gen-unopt-load-wopush-wp
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt oiter --instr wlcontents --instr kstate --instr-mode load --instr strip_push --opt np --nps wp" $(BMKS)
+
+pm-full-atomics: ../pm-gen-full-atomics
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt oiter --instr wlatomics --opt np --nps wp --nps fg --npf 8 --opt parcomb " $(BMKS)
+
+pm-full-atomics-base: ../pm-gen-full-atomics-base
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt oiter --instr wlatomics --opt np --nps wp --nps fg --npf 8" $(BMKS)
+
+unopt-pm-load-wopush-tb+wp+fg: ../pm-gen-unopt-load-wopush-tb+wp+fg
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt oiter --instr wlcontents --instr kstate --instr-mode load --instr strip_push --opt np --nps wp --nps tb --nps fg --npf 8" $(BMKS)
+
+unopt-pm-wopush-sort: ../pm-gen-unopt-wopush-sort
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode load --instr strip_push --instr wlsort" $(BMKS)
+
+unopt-pm-filter: ../pm-gen-unopt-filter
+	make -k GENSRC=../$< GGCFLAGS="--dis-opt all --instr wlcontents --instr kstate --instr-mode load --instr savefilter" $(BMKS)
+
+../pm-gen-%:
+	mkdir -p $@

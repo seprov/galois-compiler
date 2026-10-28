@@ -1,0 +1,99 @@
+AST Design for the GaloisGPU Compiler
+
+* Generic Structure of a Cautious Operator
+
+  Work Element
+
+  Acquire Neighbourhood (optional)
+
+  Process Work Element
+
+  Update Work Element (optional) OR
+
+  Update Data Structure/Neighbourhood (optional)
+
+  Push New Work Elements from Neighbourhood
+
+* Data Structures
+** Graph
+** Worklist
+** ConflictList
+* Iterators
+** ForAll
+* Notes
+
+  Should an Operator be explicit or implicit?
+
+  If an Operator contains is serial, then we have to assign it to processor and we are done.
+
+  If an operator contains a parallel loop, we may need to "flatten" it -- how to do this with minimum time and space?
+
+  
+* Ideas
+  
+  Message Boxes -- Reducing
+
+  GaloisDS -> Graph
+           -> UF
+
+  Concurrent Data Structures -> 1, Warp, Thread, etc.
+
+  Use COG to generate aggregate versions of basic data structure primitive functions?
+
+  Recursive Work-element Generation -> Nested Operators?
+
+  Asynchronous Algorithms vs Synchronous Algorithms (Algorithms == Worklist processsing)
+
+  Operator(Worklist) yields empty or another worklist. If it yields
+  same named worklist, we're looking at an iterative/recursive
+  computation. If it yields empty worklist (by name) it ends?
+
+
+* Key problems
+  
+  Balanced Worklist Expansion
+
+* The Fully Expanded Pipeline Representation
+
+  WL
+
+  |
+  v
+
+  Op
+
+  |
+  v
+
+  WL
+
+  etc.
+
+  Where Op can be a regular operator (straight down) or it can be a
+  irregular operator (talks to left and right to figure out where to
+  place its outputs). 
+
+  There could be Operators (like Neighbourhood discovery in DMR) that
+  don't know how much work they're going to do.
+
+  There should also be arbitration logic to ensure concurrency and
+  consistency?
+
+  End result is a pipeline that can be replicated horizontally for
+  increased parallelism.
+
+  Right-and-left edges on Operators could be via shared memory inside
+  a thread block
+
+* Requirements
+
+  Should be able to switch from async to sync worklist processing
+  Should be able to generate topo version from data-driven version
+  Should be reasonably generic and allow implementations of different variant of algorithms
+  
+  Break up large/Merge small operators depending on information flow?
+
+* References
+
+  Glift
+  CASES 2014

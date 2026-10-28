@@ -1,0 +1,17 @@
+digraph f {
+subgraph "cluster__Z4test3Any" {
+node [fontname="Courier",fontsize=10,shape=Mrecord];
+"_Z4test3Any"
+[label="{<entry>	.global		_Z4test3Any\l	.type		_Z4test3Any,@function\l	.size		_Z4test3Any,(.L_27\ -\ _Z4test3Any)\l	.other		_Z4test3Any,\<no\ object\>\l_Z4test3Any:\l.text._Z4test3Any:\l\ \ MOV\ R1,\ c\[0x0\]\[0x44\];\l\ \ MOV\ R0,\ RZ;\l\ \ LDS.128\ R4,\ \[RZ\];\l\ \ SHFL.DOWN\ P0,\ R3,\ R0,\ 0x2,\ 0x1f;\l\ \ ISUB\ R1,\ R1,\ 0x40;\l\ \ @P0\ IADD\ R3,\ R3,\ R0;\l\ \ STL.64\ \[R1+0x18\],\ R6;\l\ \ SHFL.DOWN\ P0,\ R2,\ R3,\ 0x4,\ 0x1f;\l\ \ @P0\ IADD\ R2,\ R2,\ R3;\l\ \ STL.64\ \[R1+0x10\],\ R4;\l\ \ SHFL.DOWN\ P0,\ R3,\ R2,\ 0x8,\ 0x1f;\l\ \ MOV\ R16,\ c\[0x0\]\[0x140\];\l\ \ LDS.128\ R8,\ \[0x10\];\l\ \ @P0\ IADD\ R3,\ R3,\ R2;\l\ \ LDS.64\ R12,\ \[0x20\];\l\ \ IADD\ R6.CC,\ R1,\ c\[0x0\]\[0x24\];\l\ \ LDS\ R0,\ \[0x28\];\l\ \ MOV\ R17,\ c\[0x0\]\[0x144\];\l\ \ SHFL.DOWN\ P1,\ R2,\ R3,\ 0x10,\ 0x1f;\l\ \ IADD.X\ R7,\ RZ,\ RZ;\l\ \ S2R\ R4,\ SR_LANEID;\l\ \ IADD\ R5,\ R1,\ 0x10;\l\ \ ISETP.NE.AND\ P0,\ PT,\ R4,\ RZ,\ PT;\l\ \ STL.64\ \[R1+0x28\],\ R10;\l\ \ S2R\ R4,\ SR_TID.X;\l\ \ @P1\ IADD\ R2,\ R2,\ R3;\l\ \ STL.64\ \[R1+0x20\],\ R8;\l\ \ STL.64\ \[R1+0x30\],\ R12;\l\ \ STL\ \[R1+0x38\],\ R0;\l|<exit0>\ \ @P0\ BRA.U\ `(.L_2);\l|<exitpost0>\ \ @!P0\ ISET.LT.AND\ R0,\ R4,\ RZ,\ PT;\l\ \ @!P0\ IMAD.U32.U32.HI\ R0,\ R0,\ 0x20,\ R4;\l\ \ @!P0\ SHR\ R0,\ R0,\ 0x5;\l\ \ @!P0\ ISCADD\ R0,\ R0,\ R5,\ 0x2;\l\ \ @!P0\ STL\ \[R0+0x8\],\ R2;\l}"]
+"_Z4test3Any":exit0:e -> ".L_2":entry:n [style=solid];
+"_Z4test3Any":exitpost0:s -> ".L_2":entry:n [style=solid];
+node [fontname="Courier",fontsize=10,shape=Mrecord];
+".L_2"
+[label="{<entry>.L_2:\l\ \ BAR.SYNC\ 0x0;\l\ \ ISETP.NE.AND\ P0,\ PT,\ R4,\ RZ,\ PT;\l|<exit0>\ \ @P0\ BRA.U\ `(.L_3);\l|<exitpost0>\ \ @!P0\ LDL\ R3,\ \[R5+0xc\];\l\ \ @!P0\ LDL.64\ R12,\ \[R5+0x10\];\l\ \ @!P0\ LDL.64\ R14,\ \[R5+0x18\];\l\ \ @!P0\ IADD\ R0,\ R3,\ R2;\l\ \ @!P0\ IADD\ R0,\ R0,\ R12;\l\ \ @!P0\ IADD\ R0,\ R0,\ R13;\l\ \ @!P0\ LDL.64\ R12,\ \[R5+0x20\];\l\ \ @!P0\ IADD\ R0,\ R0,\ R14;\l\ \ @!P0\ IADD\ R0,\ R0,\ R15;\l\ \ @!P0\ IADD\ R0,\ R0,\ R12;\l\ \ @!P0\ IADD\ R2,\ R0,\ R13;\l}"]
+".L_2":exit0:e -> ".L_3":entry:n [style=solid];
+".L_2":exitpost0:s -> ".L_3":entry:n [style=solid];
+node [fontname="Courier",fontsize=10,shape=Mrecord];
+".L_3"
+[label="{<entry>.L_3:\l\ \ ISETP.NE.AND\ P0,\ PT,\ R2,\ RZ,\ PT;\l\ \ ISETP.EQ.AND\ P0,\ PT,\ R4,\ RZ,\ P0;\l|<exit0>\ \ @!P0\ EXIT;\l|<exitpost0>\ \ ISUB\ R0,\ R6,\ c\[0x0\]\[0x24\];\l\ \ S2R\ R8,\ SR_CTAID.X;\l\ \ MOV\ R9,\ RZ;\l\ \ MOV32I\ R4,\ 32@lo($str);\l\ \ MOV32I\ R5,\ 32@hi($str);\l\ \ STL.64\ \[R0\],\ R8;\l\ \ STL\ \[R0+0x8\],\ R2;\l\ \ JCAL\ `(vprintf);\l\ \ ST.E\ \[R16\],\ R2;\l\ \ MOV\ RZ,\ RZ;\l|<exit1>\ \ EXIT;\l}"]
+}
+}

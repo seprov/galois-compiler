@@ -1,0 +1,76 @@
+* Optimizations
+
+** ReturnFromParallelFor
+
+   Reduce{All(AND)/Any(OR)}(Kernel)
+
+   Correct implementation records the return value of each iteration
+   in an array that is then reduced.
+
+   However, only reductions supported are Any/All.
+
+   The reduction can be "pushed" into the kernel.
+
+   First optimization is that direct writes to a global array are
+   replaced by writes to a local array. 
+
+   Second optimization is that the local array is replaced by a single
+   accumulator.
+
+   Third optimization is that local accumulator atomically updates a
+   global accumulator that is then returned to caller.
+
+
+   Implementation of these optimizations requires:
+   1) modifying the argument list of the generated kernel
+   2) creating local accumulator
+   3) replacing rfpf with suitable updates to local accumulator
+   4) modifying all exit paths to update global accumulator
+
+
+   1) can be done on the GGAST
+   2) can be done on the GGAST, but not easily (decls)
+   3) currently causes GGAST to be replaced with cgen
+   4) requires a CFG of the GGAST and generates cgen code
+      
+
+If called in the context of any/all, 
+  
+** Worklist code generation
+
+   When a kernel uses a worklist, we indicate whether it is a
+   bulk-synchronous/or an asynchronous algorithm or something in
+   between?
+
+   For bulk synchronous algorithms, we must generate code that uses
+   two worklists -- an in and an out.
+
+   The implementation requires:
+
+   1) Modifying the kernels' arguments (GGAST)
+   2) Replacing instances of worklist operators with the correct worklist (GGAST)
+   3) Generating code at ggmain that creates and initializes worklists (codegen?)
+   4) Generating code at ITERATE that manages/switches worklists  (codegen?)
+
+   SSSP/Delta-stepping uses async and worklist priority handling.
+
+   
+** Different Worklist Distribions
+
+   Order of assigning work from worklist to individual threads can be
+   changed.
+
+   Implementation must:
+
+   1) Change generated loop structure
+   2) Ensure control flow inside loop is preserved
+
+** Uniform loop structure
+
+   If there is a barrier inside a loop, this requires uniform loop structure?
+
+   1) Change generated loop structure
+   2) Ensure that control flow inside loop is preserved by:
+      1. ?
+
+** Reducing Memory Traffic by implementing local collision detection?

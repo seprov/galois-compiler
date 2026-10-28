@@ -1,0 +1,13 @@
+# -*- mode: make -*-
+
+APPS=bfs-topo bfs-cx bfs-tp bfs-hybrid sssp-topo bfs-wl sssp-wl sssp-nf sssp-wl-noprio mis mst-wl mst-wl-test dmr pr-tp pr-residual pr-residual-wl cc triangles mis-checker mis-pannotia
+
+.PHONY: $(APPS) clean
+
+all: $(APPS)
+
+$(APPS): 
+	make -C $@
+
+#clean: 
+#       for i in $(APPS); do make -C $$i clean; done
