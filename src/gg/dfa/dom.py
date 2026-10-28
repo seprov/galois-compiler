@@ -6,7 +6,7 @@ class DomCommon(DFA):
 
         out = {}
 
-        for nid, n in alln.iteritems():
+        for nid, n in alln.items():
             x = self.info(n)
 
             for xdom in x.values:
@@ -28,7 +28,7 @@ class DomCommon(DFA):
         out = {}
 
         # textbook defn
-        for nid, n in alln.iteritems():
+        for nid, n in alln.items():
             x = self.info(n)
             #print "NODE", nid
             # succ or pred
@@ -59,7 +59,7 @@ class DomCommon(DFA):
 
         allN = self.all_nodes_dict()
 
-        for nid, n in allN.iteritems():
+        for nid, n in allN.items():
             i = self.info(n).values - set([n.node_id])
             
             for can_imm in i:

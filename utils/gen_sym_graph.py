@@ -23,18 +23,18 @@ def prefix_sum(array):
 
 class DOTOutput(object):
     def start(self, nnodes, nedges):
-        print "digraph {"
-        print "# nnodes = %d" % (n,)
-        print "# nedges = %d" % (n,)
+        print("digraph {")
+        print("# nnodes = %d" % (n,))
+        print("# nedges = %d" % (n,))
 
-        print >>sys.stderr, "nnodes = %d" % (nnodes,)
-        print >>sys.stderr, "nedges = %d" % (nedges,)
+        print("nnodes = %d" % (nnodes,), file=sys.stderr)
+        print("nedges = %d" % (nedges,), file=sys.stderr)
 
     def stop(self):
-        print "}"
+        print("}")
 
     def edge(self, s, d):
-        print "%d -> %d;" % (s, d)
+        print("%d -> %d;" % (s, d))
 
 class DIMACSOutput(object):
     def start(self, nnodes, nedges):
@@ -42,13 +42,13 @@ class DIMACSOutput(object):
         self.nedges = nedges
         self.nedges_output = 0
 
-        print >>sys.stderr, "nnodes = %d" % (nnodes,)
-        print >>sys.stderr, "nedges = %d" % (nedges,)
+        print("nnodes = %d" % (nnodes,), file=sys.stderr)
+        print("nedges = %d" % (nedges,), file=sys.stderr)
 
-        print "p sp %d %d" %  (self.nnodes, self.nedges)
+        print("p sp %d %d" %  (self.nnodes, self.nedges))
 
     def edge(self, s, d):
-        print "a %d %d %d" % (s+1, d+1, 1) # 1-based offset
+        print("a %d %d %d" % (s+1, d+1, 1)) # 1-based offset
         self.nedges_output += 1
 
     def stop(self):

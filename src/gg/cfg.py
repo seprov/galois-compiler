@@ -147,10 +147,10 @@ def custom_visualize(f, cfgnode, nodefn = None, edgefn = None):
             node_attrs = {}
 
         if len(node_attrs):
-            s = ",".join(["%s=%s" % (k, v) for k, v in node_attrs.iteritems()])
-            print >>f, '%d [%s];' % (cfgnode.node_id, s)
+            s = ",".join(["%s=%s" % (k, v) for k, v in node_attrs.items()])
+            print('%d [%s];' % (cfgnode.node_id, s), file=f)
         else:
-            print >>f, '%d;' % (cfgnode.node_id,)
+            print('%d;' % (cfgnode.node_id,), file=f)
 
     def vedge(a, b):
         if edgefn:
@@ -159,19 +159,19 @@ def custom_visualize(f, cfgnode, nodefn = None, edgefn = None):
             edge_attrs = {}
 
         if len(edge_attrs):
-            s = ",".join(["%s=%s" % (k, v) for k, v in edge_attrs.iteritems()])
-            print >>f, "%d -> %d [%s];" % (a.node_id, b.node_id, s)
+            s = ",".join(["%s=%s" % (k, v) for k, v in edge_attrs.items()])
+            print("%d -> %d [%s];" % (a.node_id, b.node_id, s), file=f)
         else:
-            print >>f, "%d -> %d;" % (a.node_id, b.node_id)
+            print("%d -> %d;" % (a.node_id, b.node_id), file=f)
 
     visitor(cfgnode, vnode, vedge, set())
 
 def visualize(f, cfgnode):
     def vnode(cfgnode):
-        print >>f, '%d [label="%s (%d)"];' % (cfgnode.node_id, cfgnode.name, cfgnode.node_id)
+        print('%d [label="%s (%d)"];' % (cfgnode.node_id, cfgnode.name, cfgnode.node_id), file=f)
 
     def vedge(a, b):
-        print >>f, "%d -> %d;" % (a.node_id, b.node_id)
+        print("%d -> %d;" % (a.node_id, b.node_id), file=f)
 
     visitor(cfgnode, vnode, vedge, set())
 
@@ -207,13 +207,13 @@ class CfgBuilder(gg.ast.walkers.ASTWalker):
                 if hasattr(srcnode.astnode, 'stmts'):
                     if len(srcnode.astnode.stmts.stmts) > 0:
                         import sys
-                        print >>sys.stderr, "WARNING: nodes not in CFG (%s)" % (srcnode.astnode.stmts.stmts)
+                        print("WARNING: nodes not in CFG (%s)" % (srcnode.astnode.stmts.stmts), file=sys.stderr)
 
                     # should this have been handled by letting Block create an empty cfgnode?
                     srcnode.astnode.stmts.stmts.append(astnode)
                     return
 
-            print srcnode, dstnode, srcnode.node_id, dstnode.node_id
+            print(srcnode, dstnode, srcnode.node_id, dstnode.node_id)
 
         assert after or before, "Unable to figure out where to add node"  # TODO: fix this
 
@@ -281,11 +281,11 @@ class CfgBuilder(gg.ast.walkers.ASTWalker):
             try:
                 idx = block.stmts.index(cfgnode.astnode)
             except ValueError:
-                print cfgnode.astnode, cfgnode.astnode._coop_only
-                print block.stmts
+                print(cfgnode.astnode, cfgnode.astnode._coop_only)
+                print(block.stmts)
                 for s in block.stmts:
-                    print " ", s
-                print
+                    print(" ", s)
+                print()
                 raise
 
             block.stmts.insert(idx, astnode)
@@ -550,11 +550,11 @@ if __name__ == "__main__":
     for c in cb.cfgs:
         a = set()
         f = c.name + ".dot"
-        print f
+        print(f)
         of = open(f, "w")
-        print >>of, "digraph {"
+        print("digraph {", file=of)
         visualize(of, c)
-        print >>of, "}"
+        print("}", file=of)
         of.close()
 
     

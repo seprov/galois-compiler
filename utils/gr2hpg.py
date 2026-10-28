@@ -10,13 +10,13 @@ gr.populate_csr(grf)
 
 f = sys.stdout
 
-print >>f, grf.num_nodes
+print(grf.num_nodes, file=f)
 c = 0
 for N in grf.nodes():
-    print >>f, "%d %d" % (c, N.out_degree())
+    print("%d %d" % (c, N.out_degree()), file=f)
     c += N.out_degree()
 
-print >>f, "\n0\n"
-print >>f, grf.num_edges
+print("\n0\n", file=f)
+print(grf.num_edges, file=f)
 for E in grf.all_edges():
-    print >>f, "%d %d" % (E[1], E[2])
+    print("%d %d" % (E[1], E[2]), file=f)

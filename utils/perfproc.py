@@ -51,7 +51,7 @@ class Table(object):
 
     def add_columns(self, kvpairs):
         for rid, r in enumerate(self.rows):
-            for (k, v) in kvpairs.iteritems():
+            for (k, v) in kvpairs.items():
                 if k in r:
                     log.debug("Column '%s' already in row %d, not adding" % (k, rid))
                     continue
@@ -74,12 +74,12 @@ class Table(object):
         return self
         
     def print_list(self):
-        header = self.rows[0].keys()
-        print " ".join(header)
+        header = list(self.rows[0].keys())
+        print(" ".join(header))
         for r in self.rows:
             for k in header:
-                print r[k],
-            print
+                print(r[k], end=' ')
+            print()
 
     def write_csv(self, outputfile, user_order = None):
         def pos(k):
@@ -185,7 +185,7 @@ class Table(object):
             except StopIteration:
                 return None
 
-        notfirst = any(["/" in k for k in self.rows[0].keys()])
+        notfirst = any(["/" in k for k in list(self.rows[0].keys())])
 
         if notfirst:
             t1 = query(self.rows).order_by(key)
@@ -233,8 +233,8 @@ class Table(object):
     def update(self, t):
         n = set(query(t.rows).select(lambda x: (x[BMK], x[BMK_VARIANT], x[INPUT])).distinct()) 
 
-        print >>sys.stderr, n
-        print >>sys.stderr, self.rows
+        print(n, file=sys.stderr)
+        print(self.rows, file=sys.stderr)
 
         # remove matching runs in self
         o = query(self.rows).where(lambda x: (x[BMK], x[BMK_VARIANT], x[INPUT]) not in n)
@@ -327,7 +327,7 @@ class Analysis(object):
 
         for bmk, inp_var in bmk_inputs_var:
             bmk_var = bmk_vars[bmk]
-            for inp, var in inp_var.items():
+            for inp, var in list(inp_var.items()):
                 if var != bmk_var:
                     missing = bmk_var.difference(var)
                     for m in missing:

@@ -84,7 +84,7 @@ class CompilerOptions(object):
 
     def __str__(self):
         out = []
-        for p, v in vars(self).iteritems():
+        for p, v in vars(self).items():
             if p == "backend":
                 out.append(str(self.backend))
             else:
@@ -177,7 +177,7 @@ class Compiler(object):
                     break
 
         if options.logfile:
-            logfile = logging.FileHandler(options.logfile, 'wb')
+            logfile = logging.FileHandler(options.logfile, 'w', encoding='utf-8')
             fmt = logging.Formatter('%(levelname)-8s %(message)s')
             logfile.setFormatter(fmt)
             logfile.setLevel(logging.getLevelName(options.logfile_level))

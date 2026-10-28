@@ -55,11 +55,11 @@ out = []
 for l in f:
     ls = l.strip().split()
     if len(ls) == 4:
-        out.append(map(int, ls))
+        out.append(list(map(int, ls)))
 
 l = query(out).group_by(lambda x: x[0], result_selector = av).to_list()
 for ll in l:
-    print " ".join([str(x) for x in ll])
+    print(" ".join([str(x) for x in ll]))
 
 
 X = [x[0] for x in l]

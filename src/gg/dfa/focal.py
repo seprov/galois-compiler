@@ -311,7 +311,7 @@ class FocalPointsCDep(gg.dfa.DFA):
     def dump_cdg(self, f):
         allN = self.all_nodes_dict()
 
-        print >>f, "digraph {"
+        print("digraph {", file=f)
         for nid in self.cdep.cdepgrf.nodes():
             style = []
             props = ["shape=rect"]
@@ -331,10 +331,10 @@ class FocalPointsCDep(gg.dfa.DFA):
                 style = 'style="' + ",".join(style) + '"'
                 props.append(style)
 
-            print >>f, nid, '[%s];' % (",".join(props))
+            print(nid, '[%s];' % (",".join(props)), file=f)
                         
             for e in self.cdep.cdepgrf.edges(nid):
-                print >>f, "%d -> %d;" % (nid, e)
+                print("%d -> %d;" % (nid, e), file=f)
 
-        print >>f, "}"
+        print("}", file=f)
         f.close()

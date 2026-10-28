@@ -7,7 +7,7 @@ from gg.ast.utils import *
 import gg.passes.kanno
 from gg.ast.misc import cblocks
 from gg.ast.tools import EraseGen, Dumper
-import np_sched
+from . import np_sched
 from gg.ast.callconfig import convert_to_fixed
 
 TYPEDEFS = """
@@ -119,7 +119,7 @@ def prefix_sum(loop, schedulers):
 
     out = []
 
-    comb_start_shared = [('__shared__ ' + s.ty, '_np_pc_' + s.name, '') for s, n in loop.comb_starts.itervalues()]
+    comb_start_shared = [('__shared__ ' + s.ty, '_np_pc_' + s.name, '') for s, n in loop.comb_starts.values()]
 
     out.append(CondC(num_buckets == 1, 
                      CDecl([("%s" % (loop.index_type,), 
@@ -166,7 +166,7 @@ def get_comb_start_inits(loop, schedulers):
 
         return assign_node_rhs
 
-    return [Assign("_np_pc_" + s.name, change_rhs(n.rhs)) for s, n in loop.comb_starts.itervalues()]
+    return [Assign("_np_pc_" + s.name, change_rhs(n.rhs)) for s, n in loop.comb_starts.values()]
 
 def NP1_Template(chosen_schedulers, size, start, index_var, index_type, np_factor, work, comb_sym, comb_starts, cl):
     loop = np_sched.NPLoop()
@@ -272,7 +272,7 @@ class ForAllChecksForNP(gg.ast.walkers.ASTPreOrderWalker):
             os = set()
             loc = set()
             comb_starts = set()
-            for n, s in symbols.iteritems():
+            for n, s in symbols.items():
                 if not (s.param or s.gl):                        
                     os.add(n)
                     ss = node.symtab.lookup(n)
@@ -379,7 +379,7 @@ class NP1(gg.ast.modifier.ASTModifierST):
         # table
 
         out = set()
-        for s in forall_node.symtab.symbols.itervalues():
+        for s in forall_node.symtab.symbols.values():
             if s.comb_offset:
                 out.add(s)
 
@@ -391,7 +391,7 @@ class NP1(gg.ast.modifier.ASTModifierST):
              'fg': 'struct fg_np<ITSIZE>'}
 
         out = {}
-        for x, y in S.iteritems():
+        for x, y in S.items():
             if x in schedulers:
                 out[x] = y
             else:

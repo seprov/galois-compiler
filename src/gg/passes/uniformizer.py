@@ -83,26 +83,26 @@ class UniformityChecker2(object):
 
             # a = set()
             f = c.name + ".dot"
-            print f
+            print(f)
             of = open(f, "w")
-            print >>of, "digraph {"
+            print("digraph {", file=of)
             gg.cfg.visualize(of, c)
-            print >>of, "}"
+            print("}", file=of)
             of.close()
 
             y = gg.dfa.dom.PostDominators(c)
             y.analyze()
             y.dump(sys.stdout)
-            print y.frontier()
+            print(y.frontier())
             self.dfa = y
             
     def dump_cfg(self, c):
         f = c.name + ".dot"
-        print f
+        print(f)
         of = open(f, "w")
-        print >>of, "digraph {"
+        print("digraph {", file=of)
         gg.cfg.visualize(of, c)
-        print >>of, "}"
+        print("}", file=of)
         of.close()
 
     def transitive_cdep(self, allcdep):
@@ -130,7 +130,7 @@ class UniformityChecker2(object):
             self.transitive_cdep(allcdep)
 
             nd = y.all_nodes_dict()
-            for n in nd.itervalues():
+            for n in nd.values():
                 node = n.astnode
                 if not (node.has_anno("uniform") and  node.anno.uniform.place_uniform):
                     continue
@@ -350,20 +350,20 @@ class Test(object):
 
             # a = set()
             f = c.name + ".dot"
-            print f
+            print(f)
             of = open(f, "w")
-            print >>of, "digraph {"
+            print("digraph {", file=of)
             gg.cfg.custom_visualize(of, c, self.visnode, self.visedge)
-            print >>of, "}"
+            print("}", file=of)
             of.close()
 
     def dump_cfg(self, c):
         f = c.name + ".dot"
-        print f
+        print(f)
         of = open(f, "w")
-        print >>of, "digraph {"
+        print("digraph {", file=of)
         gg.cfg.visualize(of, c)
-        print >>of, "}"
+        print("}", file=of)
         of.close()
 
 

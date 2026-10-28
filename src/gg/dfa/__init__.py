@@ -54,8 +54,8 @@ class DFA(object):
         pass
 
     def dump(self, f):
-        print >>f, self.name
+        print(self.name, file=f)
         N = self.all_nodes()
         for n in N:
-            print >>f, "  ", n.name, n.node_id, self.info(n).values
-        print >>f, ""
+            print("  ", n.name, n.node_id, self.info(n).values, file=f)
+        print("", file=f)

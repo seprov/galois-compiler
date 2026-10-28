@@ -41,7 +41,7 @@ for x in sys.argv[1:]:
     of, ext = os.path.splitext(x)
     of = of + ".csv"
     if os.path.exists(of):
-        print >>sys.stderr, of, "exists, not processing", x
+        print(of, "exists, not processing", x, file=sys.stderr)
 
     f = npreader.NVProfReader(open(x, "r"))
 

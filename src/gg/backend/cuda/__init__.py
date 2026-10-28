@@ -19,7 +19,7 @@ class CUDACompilerOptions(object):
 
     def __str__(self):
         out = []
-        for p, v in vars(self).iteritems():
+        for p, v in vars(self).items():
             if p != "parent":
                 out.append("cuda.%s=%s" % (p, v))
 

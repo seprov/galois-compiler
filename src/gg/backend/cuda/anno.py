@@ -29,7 +29,7 @@ class LaunchBoundsAnno(ASTNodeAnno):
                     mt = "({0}) > ({1}) ? ({0}) : ({1})".format(mt, omt)   # maximize threads 
 
                 if mb is None or omb is None:
-                    mb = filter([mb, omb])
+                    mb = list(filter([mb, omb]))
                 else:
                     if mb != omb:                        
                         # TODO: if mb and omb are numeric constants, this may not be needed

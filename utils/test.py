@@ -9,7 +9,7 @@ import re
 import datetime
 
 if not hasattr(subprocess, "check_output"):
-    print >>sys.stderr, "%s: Need python 2.7" % (sys.argv[0],)
+    print("%s: Need python 2.7" % (sys.argv[0],), file=sys.stderr)
     sys.exit(1)
 
 TIME_FMT = "%Y-%m-%d %H:%M:%S"
@@ -39,11 +39,11 @@ def run_command(cmd, stdout = True, stderr = True):
             output = subprocess.check_output(cmd, stderr=stderrh)
             rv = 0
         except subprocess.CalledProcessError as e:
-            print >>sys.stderr, "Execute failed: " + " ".join(cmd)
+            print("Execute failed: " + " ".join(cmd), file=sys.stderr)
             output = e.output
             rv = e.returncode
         except OSError as e:
-            print >>sys.stderr, "Execute failed: " + " ".join(cmd)
+            print("Execute failed: " + " ".join(cmd), file=sys.stderr)
             output = e.strerror
             rv = e.errno
             if e.errno == 2:
@@ -183,7 +183,7 @@ class PerfRun(Run):
             m = MULTIPLIERS[self.spec.PERF_RE_UNITS]            
 
             l = len(str(m)) - len(gd['frac'])
-            print l
+            print(l)
             assert l > 0, l
 
             time_ns = w * m + f * (10**(l-1))
@@ -198,23 +198,23 @@ def run_test(spec, inp):
 
     if r.run():
         if args.verbose:
-            if r.stdout: print >>LOGFILE, r.stdout
-            if r.stderr: print >>LOGFILE, r.stderr
+            if r.stdout: print(r.stdout, file=LOGFILE)
+            if r.stderr: print(r.stderr, file=LOGFILE)
 
         if not r.check():
-            print >>LOGFILE, "FAIL:%s: output different: %s" % (n, r.cmd_line_c,)
+            print("FAIL:%s: output different: %s" % (n, r.cmd_line_c,), file=LOGFILE)
             #TODO: write output of check?
             return False
         else:
-            print >>LOGFILE, "PASS:%s: %s" % (n, r.cmd_line_c,)
+            print("PASS:%s: %s" % (n, r.cmd_line_c,), file=LOGFILE)
 
             r.cleanup()
 
             return True
     else:
-        print >>LOGFILE, "FAIL:%s: run failed (%d): %s" % (n, r.retval, r.cmd_line_c)
-        if r.stdout: print >>LOGFILE, r.stdout
-        if r.stderr: print >>LOGFILE, r.stderr
+        print("FAIL:%s: run failed (%d): %s" % (n, r.retval, r.cmd_line_c), file=LOGFILE)
+        if r.stdout: print(r.stdout, file=LOGFILE)
+        if r.stderr: print(r.stderr, file=LOGFILE)
         
         r.cleanup()
 
@@ -228,23 +228,23 @@ def run_perf(spec, inp):
 
     if r.run():
         if args.verbose:
-            if r.stdout: print >>LOGFILE, r.stdout
-            if r.stderr: print >>LOGFILE, r.stderr
+            if r.stdout: print(r.stdout, file=LOGFILE)
+            if r.stderr: print(r.stderr, file=LOGFILE)
 
         if not r.check():
-            print >>LOGFILE, "FAIL:%s: output different: %s" % (n, r.cmd_line_c,)
+            print("FAIL:%s: output different: %s" % (n, r.cmd_line_c,), file=LOGFILE)
             #TODO: write output of check?
             return False, None
         else:
-            print >>LOGFILE, "PASS:%s: %s" % (n, r.cmd_line_c,)
+            print("PASS:%s: %s" % (n, r.cmd_line_c,), file=LOGFILE)
 
             r.cleanup()
 
             return True, r
     else:
-        print >>LOGFILE, "FAIL:%s: run failed (%d): %s" % (n, r.retval, r.cmd_line_c)
-        if r.stdout: print >>LOGFILE, r.stdout
-        if r.stderr: print >>LOGFILE, r.stderr
+        print("FAIL:%s: run failed (%d): %s" % (n, r.retval, r.cmd_line_c), file=LOGFILE)
+        if r.stdout: print(r.stdout, file=LOGFILE)
+        if r.stderr: print(r.stderr, file=LOGFILE)
         
         r.cleanup()
 
@@ -265,13 +265,13 @@ def run_debug_on_inputs(spec, inputs):
         if 'input' in inp:
             files.add(inp['input'])
         else:
-            print >>sys.stderr, "WARNING: %s does not specify a input file" % (inp['name'])
+            print("WARNING: %s does not specify a input file" % (inp['name']), file=sys.stderr)
         if 'output' in inp:
             files.add(inp['output'])
         else:
-            print >>sys.stderr, "WARNING: %s does not specify a reference output file" % (inp['name'])         
+            print("WARNING: %s does not specify a reference output file" % (inp['name']), file=sys.stderr)
     
-    print "\n".join([f for f in files if isinstance(f, str)])
+    print("\n".join([f for f in files if isinstance(f, str)]))
 
 def run_perf_on_inputs(spec, inputs):
     for a in inputs:
@@ -279,9 +279,9 @@ def run_perf_on_inputs(spec, inputs):
         failed = 0
         
         while run < args.repeat:
-            print >>LOGFILE, "PERFDATE", "BEGIN_RUN", datetime.datetime.now().strftime(TIME_FMT)
+            print("PERFDATE", "BEGIN_RUN", datetime.datetime.now().strftime(TIME_FMT), file=LOGFILE)
             v, ro = run_perf(spec, a)
-            print >>LOGFILE, "PERFDATE", "END_RUN", datetime.datetime.now().strftime(TIME_FMT)       
+            print("PERFDATE", "END_RUN", datetime.datetime.now().strftime(TIME_FMT), file=LOGFILE)
             if not v:
                 if failed < 3:
                     failed += 1
@@ -297,15 +297,15 @@ def run_perf_on_inputs(spec, inputs):
             run += 1
             p = ro.perf() 
             if p is not None:
-                print >>sys.stderr, "PERF", ro.bmk_name, ro.bmk_variant, ro.input, run, p, "'%s'" % (ro.cmd_line_c,)
-                print >>LOGFILE, "PERF", ro.bmk_name, ro.bmk_variant, ro.input, run, p, "'%s'" % (ro.cmd_line_c,)
+                print("PERF", ro.bmk_name, ro.bmk_variant, ro.input, run, p, "'%s'" % (ro.cmd_line_c,), file=sys.stderr)
+                print("PERF", ro.bmk_name, ro.bmk_variant, ro.input, run, p, "'%s'" % (ro.cmd_line_c,), file=LOGFILE)
             else:
-                print >>sys.stderr, "Unable to extract performance information"
+                print("Unable to extract performance information", file=sys.stderr)
 
 def load_spec(f):
     fp = os.path.join(os.getcwd(), f)
     g = {"__file__": fp}
-    execfile(fp, g)
+    exec(compile(open(fp, "rb").read(), fp, 'exec'), g)
     return g
 
 #bmktest = load_spec("bmktest.py")
@@ -313,7 +313,7 @@ import bmktest # for now
 
 parser = argparse.ArgumentParser(description="Run tests")
 
-parser.add_argument("inputs", nargs='?', help="Inputs to run tests on", choices=bmktest.INPUTS.keys())
+parser.add_argument("inputs", nargs='?', help="Inputs to run tests on", choices=list(bmktest.INPUTS.keys()))
 
 parser.add_argument("--quick", dest="suite", action="store_const", const="quick", help="Quick inputs")
 parser.add_argument("--full", dest="suite", action="store_const", const="full", help="All inputs")
@@ -353,8 +353,8 @@ else:
     LOGFILE = sys.stderr
 
 if not args.show_inputs:
-    print >>LOGFILE, "SYSTEM", ",".join(os.uname())
-    print >>LOGFILE, "DATE", "START", datetime.datetime.now().strftime(TIME_FMT)
+    print("SYSTEM", ",".join(os.uname()), file=LOGFILE)
+    print("DATE", "START", datetime.datetime.now().strftime(TIME_FMT), file=LOGFILE)
 
 if args.perf:
     run_perf_on_inputs(bmktest, inputs)

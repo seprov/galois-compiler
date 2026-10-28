@@ -6,7 +6,7 @@ class pr_residual_wl(irgl_bmk):
 	variant = 'residual-wl'
 
 	def filter_inputs(self, inputs):
-		return filter(lambda x: x.props.format == 'bin/galois' and ('symmetric' in x.props.flags or len(x.props.flags) == 0), inputs)
+		return [x for x in inputs if x.props.format == 'bin/galois' and ('symmetric' in x.props.flags or len(x.props.flags) == 0)]
 
 	def get_run_spec(self, bmkinput):
 		x = bmk2.RunSpec(self, bmkinput)

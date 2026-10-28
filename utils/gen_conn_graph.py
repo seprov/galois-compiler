@@ -26,18 +26,18 @@ def prefix_sum(array):
 
 class DOTOutput(object):
     def start(self, nnodes, nedges):
-        print "digraph {"
-        print "# nnodes = %d" % (nnodes,)
-        print "# nedges = %d" % (nedges,)
+        print("digraph {")
+        print("# nnodes = %d" % (nnodes,))
+        print("# nedges = %d" % (nedges,))
 
-        print >>sys.stderr, "nnodes = %d" % (nnodes,)
-        print >>sys.stderr, "nedges = %d" % (nedges,)
+        print("nnodes = %d" % (nnodes,), file=sys.stderr)
+        print("nedges = %d" % (nedges,), file=sys.stderr)
 
     def stop(self):
-        print "}"
+        print("}")
 
     def edge(self, s, d):
-        print "%d -> %d;" % (s, d)
+        print("%d -> %d;" % (s, d))
 
 class DIMACSOutput(object):
     def start(self, nnodes, nedges):
@@ -45,13 +45,13 @@ class DIMACSOutput(object):
         self.nedges = nedges
         self.nedges_output = 0
 
-        print >>sys.stderr, "nnodes = %d" % (nnodes,)
-        print >>sys.stderr, "nedges = %d" % (nedges,)
+        print("nnodes = %d" % (nnodes,), file=sys.stderr)
+        print("nedges = %d" % (nedges,), file=sys.stderr)
 
-        print "p sp %d %d" %  (self.nnodes, self.nedges)
+        print("p sp %d %d" %  (self.nnodes, self.nedges))
 
     def edge(self, s, d, w = 1):
-        print "a %d %d %d" % (s+1, d+1, w) # 1-based offset
+        print("a %d %d %d" % (s+1, d+1, w)) # 1-based offset
         self.nedges_output += 1
 
     def stop(self):
@@ -63,15 +63,15 @@ O = DIMACSOutput()
 #,], [33, 5, 33] + [257] + [1,]*29]
 
 if len(sys.argv) < 2:
-    print >>sys.stderr, "Usage: %0 d1,d2,d3:d4,d5" % (sys.argv[0],)
+    print("Usage: %0 d1,d2,d3:d4,d5" % (sys.argv[0],), file=sys.stderr)
     sys.exit(0)
 
-connectivity = [map(int, s.split(",")) for s in sys.argv[1].split(":")] 
-print >>sys.stderr, "Parsed connectivity", connectivity
+connectivity = [list(map(int, s.split(","))) for s in sys.argv[1].split(":")]
+print("Parsed connectivity", connectivity, file=sys.stderr)
 
 cnect = [sum(level) == len(level_next) for level, level_next in zip(connectivity, connectivity[1:])]
 if not all(cnect):
-    print >>sys.stderr, cnect
+    print(cnect, file=sys.stderr)
     sys.exit(0)
 
 NNODES = sum([len(ln) for ln in connectivity]) + sum(connectivity[-1])

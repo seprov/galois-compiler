@@ -54,13 +54,13 @@ class CounterFile(object):
         if not self._hdr_read:
             mh = self.fs.read(main_hdr_fmt.size)
             if not mh:
-                print >>sys.stderr, "Unable to read main header"
+                print("Unable to read main header", file=sys.stderr)
                 yield None
 
             magic, self.mblocks, self.mtpb = main_hdr_fmt.unpack(mh)
             self.mthreads = self.mblocks * self.mtpb            
             if magic != 0x5a5e5a61:
-                print >>sys.stderr, "MAGIC did not match."
+                print("MAGIC did not match.", file=sys.stderr)
                 yield None
 
         while True:
@@ -118,8 +118,8 @@ if __name__ == "__main__":
             sys.exit(1)
 
         
-        print 'iteration: %d   work: %d' % (r.iteration, r.work)
+        print('iteration: %d   work: %d' % (r.iteration, r.work))
         for i, (c, v, s) in enumerate(zip(r.counts, r.values, r.start)):
-            print i, c, v, s
-        print 
+            print(i, c, v, s)
+        print()
  

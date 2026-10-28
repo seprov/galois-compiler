@@ -5,7 +5,7 @@
 import sys
 import sys
 if sys.version_info < (2, 7):
-    print >>sys.stderr, "%s: need python version 2.7 (you have %s)" % (sys.argv[0], sys.version)
+    print("%s: need python version 2.7 (you have %s)" % (sys.argv[0], sys.version), file=sys.stderr)
     sys.exit(1)
 
 import argparse

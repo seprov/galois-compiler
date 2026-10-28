@@ -80,7 +80,7 @@ class Graph(object):
 
     def display(self):
         for e in self.all_edges():
-            print e
+            print(e)
 
 class CSRNode(Node):
     def __init__(self, n, csrg):
@@ -176,7 +176,7 @@ class GRGraphReader(object):
         t_end = time.clock()
 
         if CHATTY:
-            print >>sys.stderr, "Creating nodes: ", t_end - t_st
+            print("Creating nodes: ", t_end - t_st, file=sys.stderr)
 
         t_st = time.clock()
         last_offset = 0
@@ -192,7 +192,7 @@ class GRGraphReader(object):
         for src, offset in enumerate(self.offsets):
             degree = offset - last_offset
             Nedges += degree
-            if CHATTY and CHATTY_LEVEL > 1: print >>sys.stderr, degree, Nedges   
+            if CHATTY and CHATTY_LEVEL > 1: print(degree, Nedges, file=sys.stderr)
 
             N = nodes[src]
 
@@ -208,7 +208,7 @@ class GRGraphReader(object):
             last_offset = offset
 
         t_end = time.clock()
-        if CHATTY: print >>sys.stderr, "Creating edges: ", t_end - t_st, Nedges
+        if CHATTY: print("Creating edges: ", t_end - t_st, Nedges, file=sys.stderr)
         #gc.enable()
 
     def _read_array_from_file_2(self, ty, n, f):
@@ -223,7 +223,7 @@ class GRGraphReader(object):
             out.append(ty.unpack(d)[0])
 
         end = time.clock()
-        print "total", end - st
+        print("total", end - st)
 
         return out
 
@@ -288,7 +288,7 @@ class GRGraphReader(object):
         version, sizeEdgeTy, numNodes, numEdges = struct.unpack(fmt, header)
         assert(version == 1)
 
-        if CHATTY: print >>sys.stderr, "reading %s: %d nodes, %d edges" % (f, numNodes, numEdges)
+        if CHATTY: print("reading %s: %d nodes, %d edges" % (f, numNodes, numEdges), file=sys.stderr)
 
         self.num_nodes = numNodes
         self.num_edges = numEdges
@@ -310,7 +310,7 @@ class GRGraphReader(object):
         g.close()
         t_end = time.clock()
 
-        if CHATTY: print >>sys.stderr, "reading done.", t_end - t_st
+        if CHATTY: print("reading done.", t_end - t_st, file=sys.stderr)
 
 
 if __name__ == "__main__":
@@ -323,7 +323,7 @@ if __name__ == "__main__":
     all_e = grf.all_edges()
     for N in grf.nodes():
         for e in N.edges():
-            print e, next(all_e)
+            print(e, next(all_e))
         
-        print
+        print()
 

@@ -16,7 +16,7 @@ class SyntaxChecker(gg.ast.walkers.ASTPreOrderWalker):
             ds = node.syntax_types()
 
             x = True
-            for attr, (name, ty) in ds.iteritems():
+            for attr, (name, ty) in ds.items():
                 av = getattr(node, attr)
                 
                 if ty is gg.ast.Block:
@@ -127,7 +127,7 @@ class CSyntaxChecker(gg.ast.walkers.ASTPreOrderWalker):
                     #TODO: there is a bug where things like uint3* x get parsed as expressions instead of declarations! We need to check this here.
 
                     assert node.c_ast[name] is not None, "%s %s %s" % (node, name, value)
-                except pycparser.plyparser.ParseError, e:
+                except pycparser.plyparser.ParseError as e:
                     if not parse:
                         node.c_ast_incomplete = True
                         if self.compiler.show_cgen(self.gen):

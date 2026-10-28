@@ -70,7 +70,7 @@ if args.nobmk:
 if args.novar:
     w = [j for j in args.novar if "+" not in j]
     if len(w):
-        print >>sys.stderr, "Incorrect parameters for --nv", ",".join(w)
+        print("Incorrect parameters for --nv", ",".join(w), file=sys.stderr)
         sys.exit(1)
 
     novar = set([tuple(j.split("+")) for j in args.novar])
@@ -117,11 +117,11 @@ for i in x:
 if args.multi:
     series = []
 
-    for s in varperbmk.values()[0]:        
+    for s in list(varperbmk.values())[0]:
         xyv = [o for o in out if o[2] == s]
         S = ssg.Series([i[0] for i in xyv], [i[1] for i in xyv], s)
         if args.hatches and S.title in args.hatches:
-            print S.title
+            print(S.title)
             S.hatch = "auto"
 
         series.append(S)

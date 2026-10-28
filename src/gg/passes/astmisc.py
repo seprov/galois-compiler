@@ -82,9 +82,9 @@ class CFG2DOTPass(gg.passes.Pass):
         for c in unit.cb.cfgs:
             f = "%s-%s.dot" % (self.prefix, c.name)
             of = open(f, "w")
-            print >>of, "digraph {"
+            print("digraph {", file=of)
             gg.cfg.visualize(of, c)
-            print >>of, "}"
+            print("}", file=of)
             of.close()
             output_dot_files.append(f)
 

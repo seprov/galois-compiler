@@ -101,7 +101,7 @@ class NPFineGrained1(NPScheduler):
                    
 
         if l.comb_present:
-            for s, n in l.comb_starts.itervalues():
+            for s, n in l.comb_starts.values():
                 if self.offset_bucket is None:
                     out.append(CBlock("%s = _np_pc_%s" % (s.name, s.name)))
                 else:
@@ -132,7 +132,7 @@ class NPFineGrained1(NPScheduler):
     def sched(self):
         l = self.loop       
 
-        comb_start_update = [Assign(s.name, CBlock(s.name + " + ITSIZE")) for s, n in l.comb_starts.itervalues()] #    "start += ITSIZE"
+        comb_start_update = [Assign(s.name, CBlock(s.name + " + ITSIZE")) for s, n in l.comb_starts.values()] #    "start += ITSIZE"
 
         return [Uniform(While("_np.work()", 
                               [CDecl(("int", "_np_i", "=0")),
@@ -170,7 +170,7 @@ class NPWarp(NPScheduler):
         else:
             comb_start_update = ["nps.warp.offset[warpid] = _np_mps.el[%d]" % (self.offset_bucket,)]
 
-        comb_start_thread_init = ["%s =  _np_pc_%s + nps.warp.offset[warpid]" % (s.name, s.name) for s, n in l.comb_starts.itervalues()]
+        comb_start_thread_init = ["%s =  _np_pc_%s + nps.warp.offset[warpid]" % (s.name, s.name) for s, n in l.comb_starts.values()]
         comb_var = [(s.ty, s.name, '= _np_ii') for s in l.comb_sym]
 
         out = []
@@ -243,7 +243,7 @@ class NPTB(NPScheduler):
         else:
             comb_start_update = ["nps.tb.offset = _np_mps.el[%d]" % (self.offset_bucket,)]
 
-        comb_start_thread_init = ["%s = _np_pc_%s + nps.tb.offset" % (s.name, s.name) for s, n in l.comb_starts.itervalues()]
+        comb_start_thread_init = ["%s = _np_pc_%s + nps.tb.offset" % (s.name, s.name) for s, n in l.comb_starts.values()]
         comb_var = [(s.ty, s.name, "= _np_j") for s in l.comb_sym]
 
         out = []

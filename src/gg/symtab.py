@@ -63,10 +63,10 @@ class SymbolTable(object):
         self.symbols[name] = Symbol(name, ty, **kwargs)
         
     def dump(self, recurse = False):
-        print ("  " * self.level) + "SYMBOL TABLE for %s %d" % (str(self.node), self.level)
-        for n, s in self.symbols.iteritems():
-            print "%s%s" % ("  "*(self.level+1), str(s))
-        print
+        print(("  " * self.level) + "SYMBOL TABLE for %s %d" % (str(self.node), self.level))
+        for n, s in self.symbols.items():
+            print("%s%s" % ("  "*(self.level+1), str(s)))
+        print()
 
         if recurse:
             for c in self.children:
@@ -76,7 +76,7 @@ class SymbolTable(object):
         if out is None:
             out = {}
 
-        for n, s in self.symbols.iteritems():
+        for n, s in self.symbols.items():
             # respect scoping
             if n not in out and s.cval is not None:
                 out[n] = s.cval

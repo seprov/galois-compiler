@@ -6,7 +6,7 @@ class dmr(irgl_bmk):
 	variant = 'irgl'
    
 	def filter_inputs(self, inputs):
-		return filter(lambda x: x.props.format == "text/mesh", inputs)
+		return [x for x in inputs if x.props.format == "text/mesh"]
 
 	def get_run_spec(self, bmkinput):
 		x = bmk2.RunSpec(self, bmkinput)

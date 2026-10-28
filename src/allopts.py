@@ -42,12 +42,12 @@ def combos(opts, name = '', depth = 0):
     if isinstance(opts, dict):
         if '_opts_' in opts:
             children = opts['_opts_']
-            k = [kk for kk in opts['_opts_'].keys() if kk not in set(['_opts_', '_mustdescend_'])]
+            k = [kk for kk in list(opts['_opts_'].keys()) if kk not in set(['_opts_', '_mustdescend_'])]
         else:
             assert depth == 0
             children = opts
 
-        k = [kk for kk in children.keys() if kk not in set(['_opts_', '_mustdescend_'])]
+        k = [kk for kk in list(children.keys()) if kk not in set(['_opts_', '_mustdescend_'])]
         md = '_mustdescend_' in opts and opts['_mustdescend_']
 
         for opt in k:
@@ -115,7 +115,7 @@ def print_tree(treelist, depth = 0):
         if isinstance(y, list):
             print_tree(y, depth + 1)
         else:
-            print "\t" * depth, y
+            print("\t" * depth, y)
 
 def get_all_combos():
     count = 0
@@ -143,4 +143,4 @@ if __name__ == "__main__":
         
         cmdline = " ".join(c.cmdline)
 
-        print args.template.format(name = sname, cmdline = cmdline)
+        print(args.template.format(name = sname, cmdline = cmdline))

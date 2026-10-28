@@ -1,3 +1,9 @@
+Historical 2019 build notes
+==========================
+
+See README.md for the Python 3 port and tested CUDA 13 nested-loop path.
+The requirements below describe the original full runtime distribution.
+
 Pre-requisites
 --------------
 

@@ -26,7 +26,7 @@ class PassManager(object):
             self.depends[pn] = p.depends.copy() # for rdepends
 
     def order_passes(self):
-        for pn, p in self.passes.iteritems():
+        for pn, p in self.passes.items():
             if hasattr(p, 'rdepends'):
                 for rd in p.rdepends:
                     assert rd in self.depends, "Pass '%s' in rdepends of '%s', but not scheduled for execution" % (rd, pn)

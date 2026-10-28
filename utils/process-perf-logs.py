@@ -46,7 +46,7 @@ for i in args.input:
         m = st.match(l)
         if m:
             assert False, l
-            print m.group(0)
+            print(m.group(0))
             continue
 
         m = dt.match(l)
@@ -88,4 +88,4 @@ for i in args.input:
 
 
 T.write_csv(args.output)
-print >>sys.stderr, "Total time for experiment (h:m:s)", datetime.datetime.strptime(END_DATE, TIME_FMT) - datetime.datetime.strptime(START_DATE, TIME_FMT)
+print("Total time for experiment (h:m:s)", datetime.datetime.strptime(END_DATE, TIME_FMT) - datetime.datetime.strptime(START_DATE, TIME_FMT), file=sys.stderr)

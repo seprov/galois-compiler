@@ -1,5 +1,6 @@
 import toposort
 import ast
+from functools import reduce
 #import re
 
 #ID_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
@@ -27,7 +28,7 @@ def build_constants_table(symbols):
        returns a dict of symbol: literal-values"""
 
     deps = {}
-    for s, v in symbols.iteritems():
+    for s, v in symbols.items():
         n = ExtractNames.get_names(v)
         deps[s] = set(n)
 
@@ -207,7 +208,7 @@ def test_cccp_shr_one():
     callee = [ShrinkableBlockTy("callee", "TB_SIZE")]
     syms = {'TB_SIZE': 256}
 
-    print call_config_compat_p(caller, callee, syms)
+    print(call_config_compat_p(caller, callee, syms))
 
 def test_cccp_shr_two():
     "Test with one callee and compatible bounds on caller"
@@ -216,7 +217,7 @@ def test_cccp_shr_two():
     callee = [ShrinkableBlockTy("callee", "TB_SIZE_2")]
     syms = {'TB_SIZE_1': 256, 'TB_SIZE_2': 512}
 
-    print call_config_compat_p(caller, callee, syms)
+    print(call_config_compat_p(caller, callee, syms))
 
 def test_cccp_fix_one():
     "Test with one callee and fixed bounds on caller"
@@ -225,7 +226,7 @@ def test_cccp_fix_one():
     callee = [FixedBlockTy("callee", "TB_SIZE_2")]
     syms = {'TB_SIZE_1': 512, 'TB_SIZE_2': 256}
 
-    print call_config_compat_p(caller, callee, syms)
+    print(call_config_compat_p(caller, callee, syms))
 
 def test_cccp_fix_one_2():
     "Test with one callee and fixed bounds on caller"
@@ -234,7 +235,7 @@ def test_cccp_fix_one_2():
     callee = [FixedBlockTy("callee", "TB_SIZE_2")]
     syms = {'TB_SIZE_1': 256, 'TB_SIZE_2': 512}
 
-    print call_config_compat_p(caller, callee, syms) # should be false
+    print(call_config_compat_p(caller, callee, syms)) # should be false
 
 def test_cccp_elastic_one():
     "Test with one callee and fixed bounds on caller"
@@ -243,7 +244,7 @@ def test_cccp_elastic_one():
     callee = [ElasticBlockTy("callee", None)]
     syms = {}
 
-    print call_config_compat_p(caller, callee, syms) # should be false
+    print(call_config_compat_p(caller, callee, syms)) # should be false
 
 
 if __name__ == "__main__":

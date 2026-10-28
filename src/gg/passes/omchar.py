@@ -82,7 +82,7 @@ class OmAnnotator(gg.ast.walkers.ASTWalker):
                 out['loop1_it_type'] = self._char_iter(self.loops[1])
             else:
                 out['loop1_it_type'] = ""
-                print >>sys.stderr, "IGNORING SECOND LOOP: %s: %d" % (node.name, self.loops[1].nesting_level)
+                print("IGNORING SECOND LOOP: %s: %d" % (node.name, self.loops[1].nesting_level), file=sys.stderr)
 
             if len(self.loops) > 2:
                 # WARNING: no loop nesting level information available...

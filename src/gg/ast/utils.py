@@ -20,7 +20,7 @@ class Stack(object):
         if len(self.stk):
             self.stk[-1] = value
         else:
-            raise IndexError, "Stack is empty"
+            raise IndexError("Stack is empty")
 
     def empty(self):
         return len(self.stk) == 0

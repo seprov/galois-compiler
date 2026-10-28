@@ -10,7 +10,7 @@ import gg.ndxtrans
 from gg.ast.params import *
 from gg.ast.utils import Stack
 from gg.ast.callconfig import ShrinkableBlockTy, FixedBlockTy, ElasticBlockTy
-import instr as cuda_instr
+from . import instr as cuda_instr
 
 TOP_LEVEL = (gg.ast.Kernel, gg.ast.CBlock, gg.ast.Names)
 WL_TYPES = {'basic': "Worklist2", 'texture': "WorklistT"}
@@ -418,7 +418,7 @@ class CUDAGen(gg.ast.walkers.ASTWalker):
         # 10% improvement on bfs-topo-USA
 
         nv = node.ndxvar
-        map(self.cur_block.decls.append, nv.decls())
+        list(map(self.cur_block.decls.append, nv.decls()))
 
         if hasattr(nv, "pre_body_code"):
             z = nv.pre_body_code()
@@ -566,7 +566,7 @@ class CUDAGen(gg.ast.walkers.ASTWalker):
         if not (hasattr(node.anno, 'cuda') and hasattr(node.anno.cuda, "launch_bounds")):
             return func_body
 
-        bounds = list(node.anno.cuda.launch_bounds.bounds.itervalues())
+        bounds = list(node.anno.cuda.launch_bounds.bounds.values())
 
         if len(bounds) == 1:
             return CudaLaunchBounds(bounds[0][0], func_body, bounds[0][1])
@@ -1334,7 +1334,7 @@ class CUDAGen(gg.ast.walkers.ASTWalker):
 
     def _decl_tb_sizes(self, unit):
         decl = set()
-        for k in unit.kernels.itervalues():
+        for k in unit.kernels.values():
             if not (k.device or k.host):
                 if k.has_anno("call_config"):
                     block = k.anno.call_config.block

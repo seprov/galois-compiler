@@ -1,7 +1,7 @@
 from collections import deque
             
 def test_printer(node, parent, depth, data = None):
-    print "  "*depth, node, node.data, parent
+    print("  "*depth, node, node.data, parent)
 
 class TNode(object):
     def __init__(self, data, children = None):
@@ -71,8 +71,8 @@ if __name__ == "__main__":
     bd = b.add_child(TNode("bd"))
     ce = c.add_child(TNode("ce"))
 
-    print "DFS"
+    print("DFS")
     a.dfs(test_printer)
 
-    print "BFS"
+    print("BFS")
     a.bfs(test_printer)

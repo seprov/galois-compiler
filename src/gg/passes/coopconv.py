@@ -30,7 +30,7 @@ class CoopXformSetup(gg.ast.modifier.ASTModifier):
         
         super(CoopXformSetup, self).visit_Kernel(node)
 
-        for cid, (s, n) in self.coops.iteritems():
+        for cid, (s, n) in self.coops.items():
             n._coop_xform = False
             self.compiler.info('No coop-conversion found:%s: %s(%s)' % (node.name,
                                                                         n.method, 

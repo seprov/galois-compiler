@@ -12,7 +12,7 @@ class ClosureBuilder(gg.ast.walkers.ASTWalker):
             xaddr = SimpleClosure()
             success = True
 
-            for name, sym in env.iteritems():
+            for name, sym in env.items():
                 ty = TypeTraits(sym.ty)
                 ty.strip_qualifiers()
 

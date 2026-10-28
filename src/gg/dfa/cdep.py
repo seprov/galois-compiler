@@ -21,7 +21,7 @@ class SimpleGraph(object):
         self.node_to_edges[a].add(b)
 
     def nodes(self):
-        return self.node_to_edges.keys()
+        return list(self.node_to_edges.keys())
 
     def edges(self, node):
         return self.node_to_edges[node]
@@ -64,11 +64,11 @@ class SimpleGraph(object):
 
     def dump(self, f):
         #f = open("pdom_" + self.cfg.name + ".dot", "w")
-        print >>f, "digraph {"
+        print("digraph {", file=f)
         for n in self.node_to_edges:
             for e in self.node_to_edges[n]:
-                print >>f, "%d -> %d" % (n, e)
-        print >>f, "}"
+                print("%d -> %d" % (n, e), file=f)
+        print("}", file=f)
 
 def get_cfg_edges(cfg, pdom):
     """Get edges (m, n) such that n does not post-dominate m"""
@@ -106,11 +106,11 @@ class ControlDependence(object):
         pdom.analyze()
         pi = pdom.immediate()
         if self._debug > 1:
-            print pi
+            print(pi)
 
         # find (m, n) in cfg where n does not post-dominate m
         ptree = SimpleGraph()
-        for n, pd in pi.iteritems():            
+        for n, pd in pi.items():
             ptree.add_edge(pd, n)
             
         if self._debug:
@@ -124,7 +124,7 @@ class ControlDependence(object):
             common, m2r, n2r = ptree.common_ancestor(m, n)
             walk = n2r[:n2r.index(common)] # index is inefficient ...
             if self._debug:
-                print (m, n), common, walk
+                print((m, n), common, walk)
             
             for wn in walk:
                 cdepgrf.add_edge(m, wn)

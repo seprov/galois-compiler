@@ -330,7 +330,7 @@ class Dumper(ASTWalker):
     tabbing = 0
 
     def print_ln(self, s):
-        print ("    " * self.tabbing) + s
+        print(("    " * self.tabbing) + s)
 
     def visit_Module(self, node):
         self.print_ln("Module")

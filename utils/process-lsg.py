@@ -41,7 +41,7 @@ def cvt_bmk_variant(row):
     return bmk_xlat[row["benchmark"]][1]
 
 if len(sys.argv) < 3:
-    print "Usage: %s processed-input.dat processed-output.csv"
+    print("Usage: %s processed-input.dat processed-output.csv")
     sys.exit(0)
 
 t = pp.read_table_file(sys.argv[1], headers = [pp.RUN, "benchmark", "variant", pp.TIME_MS, pp.INPUT_FILE])

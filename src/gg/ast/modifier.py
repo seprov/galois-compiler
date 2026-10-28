@@ -171,7 +171,7 @@ class ASTModifierST(ASTModifier):
     def visit(self, node):
         if isinstance(node, BlockStatements):
             if not hasattr(node, 'symtab'):
-                print node, node.name
+                print(node, node.name)
 
             #print "visiting", node
             self.symtab.push(node.symtab)

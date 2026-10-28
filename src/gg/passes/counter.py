@@ -59,7 +59,7 @@ class LoopProps(gg.ast.walkers.ASTPreOrderWalker):
                 node.anno.loop = LoopAnnotation()
 
             # TODO: handle uniform 
-            node.anno.loop.countable = isinstance(node, (gg.ast.ForAll,))
+            node.anno.loop.countable = isinstance(node, gg.ast.ForAll)
 
             self.loop_stack.push(node)
         else:
@@ -70,7 +70,7 @@ class LoopProps(gg.ast.walkers.ASTPreOrderWalker):
                 self.loop_stack.top.anno.loop.can_exit_early = True
 
             if hasattr(node, "c_ast") and len(self.loop_stack):
-                for p, ast in node.c_ast.iteritems():
+                for p, ast in node.c_ast.items():
                     if not isinstance(ast, list): ast = [ast]
 
                     for a in ast:

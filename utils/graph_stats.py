@@ -12,7 +12,7 @@ degree = []
 for N in grf.nodes():
     degree.append(N.out_degree())
 
-print "max_degree: %d" % max(degree)
-print "mode: ", stats.mode(degree)
+print("max_degree: %d" % max(degree))
+print("mode: ", stats.mode(degree))
 #print "median: ", stats.median(degree)
-print "item freq:\n", "\n".join(["%s %s" % (v, f) for v, f in stats.itemfreq(degree)])
+print("item freq:\n", "\n".join(["%s %s" % (v, f) for v, f in stats.itemfreq(degree)]))

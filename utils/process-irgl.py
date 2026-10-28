@@ -27,7 +27,7 @@ def cvt_input(row):
     return input_xlat[row["input_name"]]
 
 if len(sys.argv) < 2:
-    print "Usage: %s processed-input.dat"  % (sys.argv[0],)
+    print("Usage: %s processed-input.dat"  % (sys.argv[0],))
     sys.exit(0)
 
 t = pp.Table.read_csv(sys.argv[1])

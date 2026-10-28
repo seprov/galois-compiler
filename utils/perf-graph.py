@@ -63,7 +63,7 @@ if args.nobmk:
 if args.novar:
     w = [j for j in args.novar if "+" not in j]
     if len(w):
-        print >>sys.stderr, "Incorrect parameters for --nv", ",".join(w)
+        print("Incorrect parameters for --nv", ",".join(w), file=sys.stderr)
         sys.exit(1)
 
     novar = set([tuple(j.split("+")) for j in args.novar])
@@ -105,7 +105,7 @@ for i in x:
             out.append(("%s-%s" % (bmk, inp), y))
 
 if args.multi and len(varperbmk) == 1:
-    k = varperbmk.keys()[0]
+    k = list(varperbmk.keys())[0]
     if len(varperbmk[k]) > 1:
         #print [(x[0], x[2], vorder(x[2])) for x in out]
 
@@ -116,7 +116,7 @@ width = 0.35
 
 if args.multi:
     assert len(varperbmk) == 1
-    k = varperbmk.keys()[0]
+    k = list(varperbmk.keys())[0]
     numvar = len(varperbmk[k])
     numinp = len(query(out).distinct(lambda x: x[0]).to_list())
     width = 1.0/(numvar+1)
@@ -141,7 +141,7 @@ if args.multi:
     ax.set_xticks([i for i in range(numinp)])
     ax.legend([ll[0] for ll in l], [ll[1] for ll in l], loc="best")
 else:
-    ind = range(len(out))
+    ind = list(range(len(out)))
     val = [x[1] for x in out]
 
     rects1 = ax.bar(ind, val, width)

@@ -1,7 +1,7 @@
 import gg.ast
 import gg.ast.walkers
-import utils
-import anno
+from . import utils
+from . import anno
 
 # TODO: linear or nested? This is the nested format for now, which has
 # advantages, but is also very brittle to path changes.
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     DEBUG = 1
     d = PropsWriter()
     x = d.write_props(ast)
-    print json.dumps(x, indent=1)
+    print(json.dumps(x, indent=1))
     
     r = PropsReader()
     r.read_props(ast, x)

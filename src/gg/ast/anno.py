@@ -11,7 +11,7 @@ class ASTNodeAnno(object):
     clonable = False
     
     def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             assert hasattr(self, k), "Attribute %s not found on %s" % (k, self.__class__.__name__)
             setattr(self, k, v)
          
@@ -29,9 +29,9 @@ class ASTNodeAnno(object):
     def _clone_helper(self, target, props = None):
         if not self.clonable: return None # delete me, except for top-level .anno
         if not props:
-            props = vars(self).keys()
+            props = list(vars(self).keys())
 
-        for k, v in vars(self).iteritems():
+        for k, v in vars(self).items():
             if isinstance(v, ASTNodeAnno):
                 ov = v.clone()
                 if ov is not None:
@@ -284,7 +284,7 @@ def CallConfig(node, *args, **kwargs):
             
 # deprecated, do not use
 def Annotation(astnode, **kwargs):
-    for ann, value in kwargs.iteritems():
+    for ann, value in kwargs.items():
         if ann == "uniform":
             assert False
             astnode.uniform = value

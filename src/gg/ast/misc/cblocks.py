@@ -1,7 +1,7 @@
 import gg.ast.walkers
 from pycparser import CParser, c_ast
 from gg.ast import CBlock
-import cblocks2
+from . import cblocks2
 import itertools
 
 DEBUG = 1
@@ -78,7 +78,7 @@ class CReadWriteSets(gg.ast.walkers.ASTPreOrderWalker):
 
             expr = dict(node.c_expr())
 
-            for n, a in node.c_ast.iteritems():
+            for n, a in node.c_ast.items():
                 if not isinstance(a, list): # skip top-level decls?
                     # TODO: attach this to the node itself?
                     v = cblocks2.LinearizeC()

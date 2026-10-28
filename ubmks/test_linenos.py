@@ -27,4 +27,4 @@ ast = ModuleX([
         Kernel("kernel2", [('CSRGraph', 'graph'), ('int', 'LEVEL')], [ForAll("node", G.nodes(), [CBlock(["index_type dst"]),]),]),
         ])
 
-print ast.line_no
+print(ast.line_no)

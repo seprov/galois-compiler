@@ -28,7 +28,7 @@ for gg in groups:
             out.append(x)
 
     if len(out) != len(files):
-        print "%s not in all files" % (gg,)
+        print("%s not in all files" % (gg,))
     else:
         #'L2 Hit Rate (L1 Reads)'
         #'Device Memory Read Transactions'

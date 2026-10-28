@@ -4,7 +4,7 @@ from pycparser import CParser, c_ast, c_generator
 
 def dump_c(node):
     x = c_generator.CGenerator()
-    print x.visit(node)
+    print(x.visit(node))
     
 class ASTDumper(c_ast.NodeVisitor):
     """Simple AST Dumper"""
@@ -19,7 +19,7 @@ class ASTDumper(c_ast.NodeVisitor):
         self.level -= 1
 
     def println(self, s):
-        print ("  "*self.level) + s
+        print(("  "*self.level) + s)
         
     def _visit_child(self, name, node, empty = "None"):
         self.println(name)
@@ -126,7 +126,7 @@ class ASTDumper(c_ast.NodeVisitor):
     def visit_For(self, node):
         self._visit_child("init", node.init)
         self._visit_child("cond", node.cond)
-        self._visit_child("next", node.next)
+        self._visit_child("next", node.__next__)
         self._visit_child("stmt", node.stmt)
 
     def visit_FuncCall(self, node):
@@ -237,7 +237,7 @@ class LinearC(object):
             if not remove_tmp:
                 return names
             else:
-                return set(filter(lambda x: x[0] != '%', names))
+                return set([x for x in names if x[0] != '%'])
 
         def refs_get(key):
             return refs.get(key, key)
@@ -301,8 +301,8 @@ class LinearC(object):
         
     def dump(self):
         dump_c(self.node)
-        print self.linear
-        print "  "+"\n  ".join([", ".join(xx) for xx in self.linear])
+        print(self.linear)
+        print("  "+"\n  ".join([", ".join(xx) for xx in self.linear]))
         
 class LinearizeC(c_ast.NodeVisitor):
     def __init__(self):
@@ -534,9 +534,9 @@ if __name__ == "__main__":
 
     d = LinearizeC()
     d.visit(ast)
-    print d.lin_blocks
+    print(d.lin_blocks)
     for x in d.lin_blocks:
         x.dump()
-        print x.rw_set()
-        print
+        print(x.rw_set())
+        print()
     #print ast

@@ -6,7 +6,7 @@ class triangles(irgl_bmk):
 	variant = 'irgl'
 
 	def filter_inputs(self, inputs):
-		return filter(lambda x: x.props.format == 'bin/galois' and "triangle" in x.props.flags, inputs)
+		return [x for x in inputs if x.props.format == 'bin/galois' and "triangle" in x.props.flags]
 
 	def get_run_spec(self, bmkinput):
 		x = bmk2.RunSpec(self, bmkinput)
@@ -22,7 +22,7 @@ class triangles_irgl_converter(irgl_bmk, bmk2.Converter):
     format = "bin/galois"
 
     def filter_inputs(self, inputs):
-        candidates = filter(lambda x: x.props.format == 'bin/custom' and 'triangle' in x.props.flags, inputs)
+        candidates = [x for x in inputs if x.props.format == 'bin/custom' and 'triangle' in x.props.flags]
         #return filter(lambda x: x.get_alt_format(self.format) is None, candidates)
         return candidates
 

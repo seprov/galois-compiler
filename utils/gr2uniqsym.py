@@ -32,7 +32,7 @@ for E in grf.all_edges():
     output[d].add(s)
 
     if d == s:
-        print "self loop"
+        print("self loop")
 
     if (s, d) not in weights:
         if (d, s) not in weights:
@@ -56,43 +56,43 @@ for s in range(grf.num_nodes):
 
 num_edges = sum([len(output[k]) for k in output])
 
-print >>sys.stderr, "Writing %d nodes, %d edges" % (grf.num_nodes, num_edges)
+print("Writing %d nodes, %d edges" % (grf.num_nodes, num_edges), file=sys.stderr)
 
 f = sys.stdout
 
 if fmt == "PMA":
-    print >>sys.stderr, "writing PMA" # file format for Sadegh Nobari's mst
+    print("writing PMA", file=sys.stderr) # file format for Sadegh Nobari's mst
 
-    print >>f, grf.num_nodes, num_edges,
+    print(grf.num_nodes, num_edges, end=' ', file=f)
 
     for s in range(grf.num_nodes):
         assert len(output[s]) > 0
         for d in sorted(output[s]):
-            print >>f, "%d %d" % (d, weights[(s, d)]),
+            print("%d %d" % (d, weights[(s, d)]), end=' ', file=f)
 
-        print >>f
+        print(file=f)
 elif fmt == "DIMACS":
-    print >>sys.stderr, "writing dimacs (bitlimit=%s)" % (bitlimit,) # for graphconvert to convert back to Galois GR
-    print >>f, "p %d %d" % (grf.num_nodes, num_edges)
+    print("writing dimacs (bitlimit=%s)" % (bitlimit,), file=sys.stderr) # for graphconvert to convert back to Galois GR
+    print("p %d %d" % (grf.num_nodes, num_edges), file=f)
 
     for s in range(grf.num_nodes):
         assert len(output[s]) > 0
         for d in sorted(output[s]):
-            print >>f, "a %d %d %d" % (s+1, d+1, weights[(s, d)])
+            print("a %d %d %d" % (s+1, d+1, weights[(s, d)]), file=f)
 elif fmt == "HPG":
-    print >>sys.stderr, "writing HPG" # for Pawan Harish/
-    print >>f, grf.num_nodes 
+    print("writing HPG", file=sys.stderr) # for Pawan Harish/
+    print(grf.num_nodes, file=f)
     c = 0
     for s in range(grf.num_nodes):
-        print >>f, "%d %d" % (c, len(output[s]))
+        print("%d %d" % (c, len(output[s])), file=f)
         c += len(output[s])
 
-    print >>f, "\n0\n"
-    print >>f, num_edges
+    print("\n0\n", file=f)
+    print(num_edges, file=f)
 
     for s in range(grf.num_nodes):
         assert len(output[s]) > 0
         for d in sorted(output[s]):
-            print >>f, "%d %d" % (d, weights[(s, d)])
+            print("%d %d" % (d, weights[(s, d)]), file=f)
 else:
-    print >>sys.stderr, "no idea what to write"
+    print("no idea what to write", file=sys.stderr)

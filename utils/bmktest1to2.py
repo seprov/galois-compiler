@@ -20,7 +20,7 @@ class bmktest1(object):
                     ]
 
     def _get_input(self):
-        for i, d in self.INPUTS.iteritems():
+        for i, d in self.INPUTS.items():
             if 'input' in d:
                 if isinstance(d['input'], str):
                     return "x.set_arg(bmkinput.props.file, bmk2.AT_INPUT_FILE)"
@@ -28,7 +28,7 @@ class bmktest1(object):
                     return "x.set_arg(bmkinput.props.file, bmk2.AT_INPUT_FILE) #FIXTHIS %s" % (d['input'],)
             
     def _get_checker(self):
-        for i, d in self.INPUTS.iteritems():
+        for i, d in self.INPUTS.items():
             if 'output' in d:
                 if 'comp' in d:
                     if d['comp'] == "regex":
@@ -63,7 +63,7 @@ class bmktest1(object):
 
     def _get_input_bispec(self):
         out = []
-        for i, d in self.INPUTS.iteritems():
+        for i, d in self.INPUTS.items():
             if 'input' in d:
                 if isinstance(d['input'], str):
                     n = os.path.basename(d['input'])
@@ -79,13 +79,13 @@ class bmktest1(object):
         fmt = ""
         flags = set()
 
-        for i, d in self.INPUTS.iteritems():
+        for i, d in self.INPUTS.items():
             if 'input' in d:
                 if d['input'][-3:] == ".gr":
                     fmt = "bin/galois"
                 else:
                     fmt = "FIXTHIS"
-                    print >>sys.stderr, "WARNING: Unknown input format", (d['input'])                    
+                    print("WARNING: Unknown input format", (d['input']), file=sys.stderr)
                 
                 if '.sym.' in d['input']:
                     flags.add('symmetric')
@@ -112,37 +112,37 @@ class bmktest1(object):
 
         x = self._get_input_filter()
 
-        print >>f, "import bmk2"
-        print >>f, "from irglprops import irgl_bmk, PERF_RE"
-        print >>f, ""
-        print >>f, "class %s(irgl_bmk):" % (idfy)
-        print >>f, "\tbmk = '%s'" % (self.bmk,)
-        print >>f, "\tvariant = '%s'" % (self.variant,)
-        print >>f, ""
-        print >>f, "\tdef filter_inputs(self, inputs):"
-        print >>f, "\t\t" + x
-        print >>f, ""
-        print >>f, "\tdef get_run_spec(self, bmkinput):"
-        print >>f, "\t\tx = bmk2.RunSpec(self, bmkinput)"
-        print >>f, "\t\tx.set_binary(self.props._cwd, 'test')"
+        print("import bmk2", file=f)
+        print("from irglprops import irgl_bmk, PERF_RE", file=f)
+        print("", file=f)
+        print("class %s(irgl_bmk):" % (idfy), file=f)
+        print("\tbmk = '%s'" % (self.bmk,), file=f)
+        print("\tvariant = '%s'" % (self.variant,), file=f)
+        print("", file=f)
+        print("\tdef filter_inputs(self, inputs):", file=f)
+        print("\t\t" + x, file=f)
+        print("", file=f)
+        print("\tdef get_run_spec(self, bmkinput):", file=f)
+        print("\t\tx = bmk2.RunSpec(self, bmkinput)", file=f)
+        print("\t\tx.set_binary(self.props._cwd, 'test')", file=f)
         x = self._get_input()
-        if x: print >>f, "\t\t" + x
+        if x: print("\t\t" + x, file=f)
 
         x = self._get_output()
         if x is not None:
             for l in x:
-                print >>f, "\t\t" + l
+                print("\t\t" + l, file=f)
 
-        print >>f, "\t\t" + self._get_checker()
-        print >>f, "\t\t" + self._get_perf()
-        print >>f, "\t\treturn x"
-        print >>f, ""
-        print >>f, self._get_input_bispec()
-        print >>f, "BINARIES = [%s()]" % (idfy)
+        print("\t\t" + self._get_checker(), file=f)
+        print("\t\t" + self._get_perf(), file=f)
+        print("\t\treturn x", file=f)
+        print("", file=f)
+        print(self._get_input_bispec(), file=f)
+        print("BINARIES = [%s()]" % (idfy), file=f)
 
 def load_py_module(f):
     g = {'__file__': f}
-    x = execfile(f, g)
+    x = exec(compile(open(f, "rb").read(), f, 'exec'), g)
     return g
    
 
