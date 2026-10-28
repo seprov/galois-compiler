@@ -21,7 +21,10 @@ The port updates Python syntax/imports and dependency packaging, preserves the
 custom `Worklist.items()` iterator, uses text logging, and resolves nested AST
 imports relative to their source files. Tests cover all 20 original benchmark
 ASTs with default compiler options, deterministic nested-parallel generation,
-serial lowering and logging. Generating their CUDA does **not** certify that
+serial lowering and logging. Nested scheduling also supports explicitly
+`Uniform` sequential `While` loops inside the outer `ForAll`, for repeated
+cooperative stages. Unannotated loops do not receive this transformation; callers
+must ensure all threads in a block take the same loop iterations. Generating their CUDA does **not** certify that
 all original applications build or run on current CUDA.
 
 ## CUDA 13 nested-parallel execution
@@ -41,7 +44,7 @@ ctest --test-dir build-cuda --output-on-failure
 
 For a locally unpacked CUDA toolkit, also set `CMAKE_CUDA_COMPILER` to its `nvcc`
 and include its `lib` directory in `LD_LIBRARY_PATH` when running tests.
-The test covers empty and uneven inner loops, partial blocks, multiple work
+The tests cover repeated uniform stage loops as well as empty and uneven inner loops, partial blocks, multiple work
 rounds, output bounds, and participation by all 32 lanes for sufficiently long
 inner loops. The tested hardware is an RTX 3090 with CUDA 13.2.
 

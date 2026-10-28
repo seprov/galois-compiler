@@ -1,4 +1,10 @@
-#include "nested_copy.cuh"
+#ifndef NESTED_HEADER
+#define NESTED_HEADER "nested_copy.cuh"
+#endif
+#include NESTED_HEADER
+#ifndef EXPECTED_ROUND
+#define EXPECTED_ROUND 0
+#endif
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -22,7 +28,7 @@ int main() {
     CUDA(cudaMemcpy(output.data(), dv, output.size() * sizeof(int), cudaMemcpyDeviceToHost));
     CUDA(cudaMemcpy(masks.data(), dm, count * sizeof(unsigned), cudaMemcpyDeviceToHost));
     for (int p = 0; p < count; ++p) {
-      for (int i = 0; i < 257; ++i) CHECK(output[p * 257 + i] == (i < sizes[p] ? p * 1000 + i : -1));
+      for (int i = 0; i < 257; ++i) CHECK(output[p * 257 + i] == (i < sizes[p] ? p * 1000 + i + EXPECTED_ROUND * 10000 : -1));
       if (!sizes[p]) CHECK(masks[p] == 0);
       if (sizes[p] >= 32) CHECK(masks[p] == 0xffffffffu);
     }

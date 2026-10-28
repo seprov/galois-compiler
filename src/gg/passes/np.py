@@ -239,6 +239,19 @@ class ForAllNPAnno(gg.ast.ASTNodeAnno):
         return self._clone_helper(ForAllNPAnno())
 
 class ForAllChecksForNP(gg.ast.walkers.ASTPreOrderWalker):
+    # Uniform sequential rounds inside the outer ForAll do not add a parallel
+    # scheduling level. Never make this inference for an unannotated loop.
+    uniform_while_depth = 0
+
+    def visit_While(self, node):
+        transparent = (node.nesting_level > 1 and node.has_anno('uniform')
+                       and node.anno.uniform.uniform is True)
+        self.uniform_while_depth += int(transparent)
+        try:
+            super(ForAllChecksForNP, self).visit_While(node)
+        finally:
+            self.uniform_while_depth -= int(transparent)
+
     def generic_node_visitor(self, node):
         if isinstance(node, ForAll):
             if not node.check_gen(self.gen):
@@ -251,7 +264,7 @@ class ForAllChecksForNP(gg.ast.walkers.ASTPreOrderWalker):
                 node.anno.forall_np = ForAllNPAnno(perform_np = False)
                 return True
 
-            if node.nesting_level != 2:
+            if node.nesting_level - self.uniform_while_depth != 2:
                 assert not node.has_anno("forall_np")
                 node.anno.forall_np = ForAllNPAnno(perform_np = False)
                 return True

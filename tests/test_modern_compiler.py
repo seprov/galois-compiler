@@ -33,6 +33,24 @@ class CompilerTest(unittest.TestCase):
         repeated,_ = self.compile(ROOT/'tests/cuda/nested_copy.py',*args)
         self.assertEqual(code,repeated)
 
+    def test_uniform_nested_rounds(self):
+        code,log = self.compile(ROOT/'tests/cuda/nested_rounds.py',
+            '--opt','np','--nps','fg','--npf','4','--dis-opt','oiter')
+        self.assertIn('Applying Nested Parallelism',log)
+        self.assertIn('while (round < 3)',code)
+        self.assertIn('_np.inspect2',code)
+
+    def test_nonuniform_nested_rounds_stay_serial(self):
+        source = (ROOT/'tests/cuda/nested_rounds.py').read_text()
+        source = source.replace("Uniform(While('round < 3'", "While('round < owner % 3'")
+        source = source.replace(']))', '])', 1)
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)/'nonuniform.py'
+            path.write_text(source)
+            code,log = self.compile(path, '--opt','np','--nps','fg','--npf','4','--dis-opt','oiter')
+        self.assertNotIn('Applying Nested Parallelism', log)
+        self.assertNotIn('_np.inspect2', code)
+
     def test_text_logfile(self):
         _,log = self.compile(ROOT/'tests/cuda/nested_copy.py','--logdst','--loglevel','DEBUG')
         self.assertNotIn('Logging error',log)

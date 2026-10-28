@@ -20,3 +20,17 @@ target_link_libraries(irgl_nested_test PRIVATE CUDA::cudart)
 set_target_properties(irgl_nested_test PROPERTIES CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED ON)
 add_test(NAME irgl_nested_execution COMMAND irgl_nested_test)
 set_tests_properties(irgl_nested_execution PROPERTIES TIMEOUT 30)
+
+# Repeat nested cooperative work inside an explicitly uniform sequential loop.
+add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/nested_rounds.cuh"
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/../../tools/generate_nested.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/nested_rounds.py"
+    --output "${CMAKE_CURRENT_BINARY_DIR}/nested_rounds.cuh" --block-size 32
+  DEPENDS ../../tools/generate_nested.py ../../src/ggc nested_rounds.py ${IRGL_COMPILER_SOURCES} VERBATIM)
+add_executable(irgl_rounds_test nested_test.cu "${CMAKE_CURRENT_BINARY_DIR}/nested_rounds.cuh")
+target_include_directories(irgl_rounds_test PRIVATE "${CMAKE_CURRENT_BINARY_DIR}" "${IRGL_INCLUDE}" "${IRGL_CCCL_INCLUDE}")
+target_link_libraries(irgl_rounds_test PRIVATE CUDA::cudart)
+target_compile_definitions(irgl_rounds_test PRIVATE NESTED_HEADER="nested_rounds.cuh" EXPECTED_ROUND=2)
+set_target_properties(irgl_rounds_test PROPERTIES CUDA_STANDARD 17 CUDA_STANDARD_REQUIRED ON)
+add_test(NAME irgl_uniform_rounds_execution COMMAND irgl_rounds_test)
+set_tests_properties(irgl_uniform_rounds_execution PROPERTIES TIMEOUT 30)
